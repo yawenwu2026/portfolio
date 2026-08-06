@@ -236,6 +236,13 @@ footer.site{padding:96px 0 132px;margin-top:0;}
 .contact-line a:hover{color:var(--blue-deep);border-bottom-color:var(--blue-deep);}
 .copyright{margin-top:40px;font-size:.78rem;color:var(--ink-faint);}
 
+.case-nav{position:sticky;top:0;z-index:30;background:color-mix(in srgb, var(--cream) 92%, transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);}
+.case-nav-inner{max-width:1080px;margin:0 auto;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;}
+.case-nav a{font-size:.82rem;letter-spacing:.02em;color:var(--ink-soft);text-decoration:none;white-space:nowrap;}
+.case-nav a:hover{color:var(--blue);}
+.case-nav a.back{font-weight:600;color:var(--ink);}
+.case-nav .adjacent{display:flex;gap:24px;}
+@media (max-width:640px){.case-nav-inner{padding:12px 20px;gap:10px;}.case-nav .adjacent{gap:14px;}}
 .page{display:none;}
 .page.active{display:block;}
 </style>
@@ -344,6 +351,8 @@ footer.site{padding:96px 0 132px;margin-top:0;}
 </div>
 
 <div class="page" id="fsm">
+<div class="case-nav"><div class="case-nav-inner"><a href="#home" data-link="home" class="back">← All work</a><div class="adjacent"><a href="#tram" data-link="tram">tramTRACKER Redesign →</a></div></div></div>
+
 
   <section class="cs-cover">
     <div class="wrap cs-cover-grid">
@@ -701,6 +710,8 @@ footer.site{padding:96px 0 132px;margin-top:0;}
 </div>
 
 <div class="page" id="tram">
+<div class="case-nav"><div class="case-nav-inner"><a href="#home" data-link="home" class="back">← All work</a><div class="adjacent"><a href="#fsm" data-link="fsm">← FSM Mobile UI Redesign</a><a href="#naviking" data-link="naviking">NaviKing 3D →</a></div></div></div>
+
 
   <section class="cs-cover">
     <div class="wrap cs-cover-grid">
@@ -929,6 +940,8 @@ footer.site{padding:96px 0 132px;margin-top:0;}
 </div>
 
 <div class="page" id="naviking">
+<div class="case-nav"><div class="case-nav-inner"><a href="#home" data-link="home" class="back">← All work</a><div class="adjacent"><a href="#tram" data-link="tram">← tramTRACKER Redesign</a></div></div></div>
+
 
   <section class="cs-cover">
     <div class="wrap cs-cover-grid">
