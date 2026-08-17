@@ -29,7 +29,7 @@
 
   /* ---- Brand -------------------------------------------------
      Blue is the PDF's heading and link colour.
-     --color-accent-deep is a darkened variant for small text and
+     --color-brand-deep is a darkened variant for small text and
      links, because #4D70B8 alone does not clear 4.5:1 at body size. */
   --color-brand: #4D70B8;
   --color-brand-deep: #3A5896;
@@ -37,8 +37,13 @@
 
   /* ---- Accent ------------------------------------------------
      The yellow marker rules from the PDF's opening slide.
-     Decorative only. Never use for text or as a sole indicator. */
+     --color-accent is decorative only (1.48:1) — never text, never a
+     sole indicator. --color-accent-deep is a darkened gold, same
+     family, for the handful of places that actually need gold *text*
+     (a small eyebrow label, a numbered list marker): 5.2:1 against
+     --color-bg, clears AA at any size. */
   --color-accent: #F5BD33;
+  --color-accent-deep: #7A5E14;
 
   /* ---- Structure --------------------------------------------- */
   --color-border: #DDD5C9;
@@ -129,6 +134,7 @@
    #3A5896  brand-deep       5.98:1  AA, links and small brand text
    #4D70B8  brand            4.17:1  large text only, 24px+ or 19px bold
    #F5BD33  accent           1.48:1  decorative only, never text
+   #7A5E14  accent-deep      5.24:1  AA, gold text (eyebrows, numerals)
    #DDD5C9  border           1.25:1  non-essential separators only
 
    Inverse sections on #1C1F23:
