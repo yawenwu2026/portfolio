@@ -1,5 +1,8 @@
 ---
+import { getCollection } from "astro:content";
 import { WORDMARK, LINKEDIN_URL, withBase } from "../lib/site";
+
+const workEntries = [...(await getCollection("work"))].sort((a, b) => a.data.order - b.data.order);
 ---
 
 <a class="skip-link" href="#main">Skip to content</a>
@@ -12,7 +15,14 @@ import { WORDMARK, LINKEDIN_URL, withBase } from "../lib/site";
 
     <nav class="site-header__nav" aria-label="Primary">
       <a href={withBase("/")}>Home</a>
-      <a href={withBase("/#work")}>Work</a>
+      <details class="site-header__work">
+        <summary class="site-header__work-toggle">Work</summary>
+        <div class="site-header__work-panel">
+          {workEntries.map((entry) => (
+            <a href={withBase(`/work/${entry.id}`)}>{entry.data.title}</a>
+          ))}
+        </div>
+      </details>
       <a href={withBase("/about")}>About</a>
     </nav>
 
@@ -25,7 +35,14 @@ import { WORDMARK, LINKEDIN_URL, withBase } from "../lib/site";
           <img src={withBase("/images/shared/logo.png")} alt={WORDMARK} class="site-header__logo" width="162" height="64" />
         </a>
         <a href={withBase("/")}>Home</a>
-        <a href={withBase("/#work")}>Work</a>
+        <details class="site-header__work site-header__work--mobile">
+          <summary class="site-header__work-toggle">Work</summary>
+          <div class="site-header__work-panel">
+            {workEntries.map((entry) => (
+              <a href={withBase(`/work/${entry.id}`)}>{entry.data.title}</a>
+            ))}
+          </div>
+        </details>
         <a href={withBase("/about")}>About</a>
         <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer">LinkedIn</a>
       </div>
@@ -120,6 +137,72 @@ import { WORDMARK, LINKEDIN_URL, withBase } from "../lib/site";
     min-width: 2.75rem;
     min-height: 2.75rem;
     color: var(--color-text);
+  }
+
+  /* Work becomes a dropdown of the case studies rather than a link to
+     the homepage's #work anchor, so it works the same from any page,
+     not just home. Positioned relative to anchor the panel below it. */
+  .site-header__work {
+    position: relative;
+  }
+
+  .site-header__work-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    color: var(--color-text);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .site-header__work-toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  .site-header__work-panel {
+    display: none;
+  }
+
+  .site-header__work[open] .site-header__work-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 14rem;
+    margin-top: var(--space-xs);
+    padding: var(--space-xs);
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+  }
+
+  .site-header__work-panel > a {
+    padding: var(--space-sm);
+    color: var(--color-text);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .site-header__work-panel > a:hover {
+    background-color: var(--color-surface);
+  }
+
+  /* Inside the mobile menu panel the dropdown is already in a vertical
+     stack, so it opens inline underneath "Work" instead of floating —
+     no absolute positioning, just an indent to show the nesting. */
+  .site-header__work--mobile[open] .site-header__work-panel {
+    position: static;
+    transform: none;
+    min-width: 0;
+    margin-top: 0;
+    padding: 0;
+    padding-left: var(--space-md);
+    background-color: transparent;
+    border: none;
   }
 
   .site-header__menu {
