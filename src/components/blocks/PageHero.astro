@@ -1,0 +1,141 @@
+---
+// 9. PAGE HERO — currently used on home only (see index.astro). Dark
+// section, italic eyebrow, heading with <em>-marked words in accent
+// italic, role/location meta row, and a circular photo on the right.
+//
+// Heading goes through the "heading" named slot rather than a plain
+// string prop so the caller can mark specific words with <em> for the
+// italic + accent treatment, e.g.:
+//   <Fragment slot="heading">I design with <em>empathy</em>.</Fragment>
+import { withBase } from "../../lib/site";
+
+interface Props {
+  eyebrow?: string;
+  role?: string;
+  photo: string;
+  photoAlt: string;
+}
+
+const { eyebrow, role, photo, photoAlt } = Astro.props;
+---
+
+<section class="page-hero">
+  <div class="page-hero__inner">
+    <div class="page-hero__photo">
+      <img src={withBase(photo)} alt={photoAlt} />
+    </div>
+
+    <div class="page-hero__text">
+      {eyebrow && <p class="page-hero__eyebrow">{eyebrow}</p>}
+      <h1 class="page-hero__heading"><slot name="heading" /></h1>
+
+      {
+        role && (
+          <div class="page-hero__meta">
+            <p class="page-hero__meta-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="7" width="18" height="13" rx="1"></rect>
+                <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+              {role}
+            </p>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .page-hero {
+    background-color: var(--color-surface);
+    color: var(--color-text);
+  }
+
+  .page-hero__inner {
+    max-width: min(var(--width-media), 100% - 2 * var(--space-gutter));
+    margin-inline: auto;
+    padding-block: var(--space-section);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .page-hero__text {
+    max-width: min(var(--width-prose), 100%);
+  }
+
+  .page-hero__eyebrow {
+    margin: 0 0 var(--space-sm);
+    font-style: italic;
+    font-size: var(--size-lg);
+    color: var(--color-text-muted);
+  }
+
+  .page-hero__heading {
+    margin: 0;
+    max-width: 46ch;
+    font-size: var(--size-h1-fluid);
+    line-height: 1.4;
+    color: var(--color-text);
+  }
+
+  /* :global because heading content arrives via a named slot, which
+     keeps the scope attribute of whichever page provided it, not this
+     component's — a plain scoped selector would never match it. The
+     heading itself is full-strength text colour throughout (matching
+     Footer's "Let's connect" pattern), so emphasis here comes from
+     weight alone rather than a colour shift. */
+  .page-hero__heading :global(em) {
+    font-style: normal;
+    font-weight: var(--weight-semibold);
+  }
+
+  .page-hero__meta {
+    margin-top: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .page-hero__meta-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--size-sm);
+  }
+
+  .page-hero__meta-row svg {
+    flex-shrink: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  .page-hero__photo {
+    display: none;
+  }
+
+  .page-hero__photo img {
+    display: block;
+    width: 100%;
+    aspect-ratio: var(--ratio-square);
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  @media (min-width: 768px) {
+    .page-hero__inner {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .page-hero__photo {
+      display: block;
+      width: 30%;
+      flex-shrink: 0;
+    }
+  }
+</style>

@@ -1,0 +1,68 @@
+---
+// 14. EXPERIENCE LIST — for the about page. No logos.
+interface ExperienceItem {
+  role: string;
+  company: string;
+  period: string;
+}
+
+interface Props {
+  items: ExperienceItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<ul class="experience-list">
+  {
+    items.map((item) => (
+      <li class="experience-list__row">
+        <div>
+          <p class="experience-list__role">{item.role}</p>
+          <p class="experience-list__company">{item.company}</p>
+        </div>
+        <p class="experience-list__period">{item.period}</p>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .experience-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .experience-list__row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-xs) var(--space-md);
+    padding-block: var(--space-sm);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .experience-list__row:first-child {
+    border-top: none;
+  }
+
+  .experience-list__role {
+    margin: 0;
+    font-weight: var(--weight-heading);
+  }
+
+  .experience-list__company {
+    margin: var(--space-xs) 0 0;
+    color: var(--color-text-muted);
+    font-size: var(--size-sm);
+  }
+
+  .experience-list__period {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--size-sm);
+    white-space: nowrap;
+  }
+</style>

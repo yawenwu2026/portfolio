@@ -1,0 +1,252 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import { withBase } from "../lib/site";
+
+interface NavEntry {
+  slug: string;
+  title: string;
+}
+
+interface Props {
+  title: string;
+  subtitle: string;
+  company: string;
+  role: string;
+  team?: string;
+  platform: string;
+  timeline: string;
+  isPersonalProject: boolean;
+  coverImage: string;
+  coverAlt: string;
+  summary: string;
+  prevEntry?: NavEntry;
+  nextEntry?: NavEntry;
+}
+
+const {
+  title,
+  subtitle,
+  company,
+  role,
+  team,
+  platform,
+  timeline,
+  isPersonalProject,
+  coverImage,
+  coverAlt,
+  summary,
+  prevEntry,
+  nextEntry,
+} = Astro.props;
+---
+
+<BaseLayout title={`${title} — Yawen Wu`} description={summary} ogImage={coverImage} ogType="article">
+  <article>
+    <header class="hero">
+      <div class="hero__grid">
+        <div class="hero__intro">
+          {isPersonalProject && <p class="hero__label">Personal project</p>}
+          <h1>{title}</h1>
+          <p class="hero__subtitle">{subtitle}</p>
+
+          <dl class="hero__meta">
+            <div class="hero__meta-row">
+              <dt>Company</dt>
+              <dd>{company}</dd>
+            </div>
+            <div class="hero__meta-row">
+              <dt>Role</dt>
+              <dd>{role}</dd>
+            </div>
+            {team && (
+              <div class="hero__meta-row">
+                <dt>Team</dt>
+                <dd>{team}</dd>
+              </div>
+            )}
+            <div class="hero__meta-row">
+              <dt>Platform</dt>
+              <dd>{platform}</dd>
+            </div>
+            <div class="hero__meta-row">
+              <dt>Timeline</dt>
+              <dd>{timeline}</dd>
+            </div>
+          </dl>
+        </div>
+
+        <img class="hero__image" src={withBase(coverImage)} alt={coverAlt} />
+      </div>
+    </header>
+
+    <div class="case-study-body">
+      <slot />
+    </div>
+
+    <footer class="case-study-footer page">
+      <nav class="case-study-nav" aria-label="Case study navigation">
+        {prevEntry && (
+          <a class="case-study-nav__link" href={withBase(`/work/${prevEntry.slug}`)}>
+            &larr; {prevEntry.title}
+          </a>
+        )}
+        {nextEntry && (
+          <a class="case-study-nav__link case-study-nav__link--next" href={withBase(`/work/${nextEntry.slug}`)}>
+            {nextEntry.title} &rarr;
+          </a>
+        )}
+      </nav>
+      <a class="case-study-home-link" href={withBase("/")}>Back to home</a>
+    </footer>
+  </article>
+</BaseLayout>
+
+<script>
+  // Shared by every WideDiagram instance on the page, however it was
+  // rendered — the real component (fsm-mobile.mdx) or the raw HTML the
+  // plain-Markdown plugin emits for tramtracker.md / naviking.md. One
+  // delegated listener, so it works no matter how many are on the page.
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+
+    const trigger = target.closest("[data-wide-trigger]");
+    if (trigger) {
+      const dialog = trigger.closest("[data-wide-diagram]")?.querySelector("[data-wide-dialog]");
+      if (dialog instanceof HTMLDialogElement) dialog.showModal();
+      return;
+    }
+
+    const closeButton = target.closest("[data-wide-close]");
+    if (closeButton) {
+      closeButton.closest("dialog")?.close();
+      return;
+    }
+
+    // Click on the ::backdrop lands on the <dialog> element itself.
+    if (target instanceof HTMLDialogElement && target.hasAttribute("data-wide-dialog")) {
+      target.close();
+    }
+  });
+</script>
+
+<style>
+  .hero {
+    padding-top: var(--space-section);
+  }
+
+  .hero__grid {
+    max-width: min(var(--width-media), 100% - 2 * var(--space-gutter));
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+
+  @media (min-width: 1024px) {
+    .hero__grid {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      align-items: center;
+      gap: var(--space-xl);
+    }
+  }
+
+  .hero__intro {
+    max-width: var(--width-prose);
+  }
+
+  .hero__label {
+    display: inline-block;
+    margin: 0 0 var(--space-sm);
+    padding: var(--space-xs) var(--space-sm);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    color: var(--color-text-muted);
+    font-size: var(--size-sm);
+  }
+
+  .hero h1 {
+    margin: 0 0 var(--space-sm);
+  }
+
+  .hero__subtitle {
+    margin: 0 0 var(--space-md);
+    color: var(--color-text-muted);
+    font-size: var(--size-h3);
+    line-height: var(--leading-heading);
+  }
+
+  .hero__meta {
+    margin: 0;
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--color-border);
+  }
+
+  /* 2-column label/value grid, deliberately the same at every width —
+     "stays 2-column on mobile" is the explicit spec, not an oversight. */
+  .hero__meta-row {
+    display: grid;
+    grid-template-columns: minmax(5rem, 1fr) 2fr;
+    gap: var(--space-xs) var(--space-sm);
+    padding-block: var(--space-sm);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .hero__meta-row:last-child {
+    border-bottom: none;
+  }
+
+  .hero__meta-row dt {
+    color: var(--color-text-muted);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+  }
+
+  .hero__meta-row dd {
+    margin: 0;
+    font-size: var(--size-sm);
+  }
+
+  .hero__image {
+    display: block;
+    width: 100%;
+    aspect-ratio: var(--ratio-tall);
+    object-fit: cover;
+    object-position: 50% 30%;
+  }
+
+  .case-study-body {
+    padding-block: var(--space-section);
+  }
+
+  .case-study-footer {
+    padding-block: var(--space-section);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .case-study-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+  }
+
+  .case-study-nav__link,
+  .case-study-home-link {
+    display: inline-flex;
+    align-items: center;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+  }
+
+  .case-study-nav__link--next {
+    margin-left: auto;
+  }
+
+  .case-study-home-link {
+    color: var(--color-text-muted);
+  }
+</style>

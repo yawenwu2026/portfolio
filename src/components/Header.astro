@@ -1,0 +1,204 @@
+---
+import { WORDMARK, LINKEDIN_URL, withBase } from "../lib/site";
+---
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="site-header__bar">
+    <a class="site-header__wordmark" href={withBase("/")}>
+      <img src={withBase("/images/shared/logo.png")} alt={WORDMARK} class="site-header__logo" width="162" height="64" />
+    </a>
+
+    <nav class="site-header__nav" aria-label="Primary">
+      <a href={withBase("/")}>Home</a>
+      <a href={withBase("/#work")}>Work</a>
+      <a href={withBase("/about")}>About</a>
+    </nav>
+
+    <details class="site-header__menu">
+      <summary class="site-header__menu-toggle" aria-label="Menu">
+        <span class="site-header__menu-icon" aria-hidden="true"></span>
+      </summary>
+      <div class="site-header__menu-panel">
+        <a class="site-header__wordmark" href={withBase("/")}>
+          <img src={withBase("/images/shared/logo.png")} alt={WORDMARK} class="site-header__logo" width="162" height="64" />
+        </a>
+        <a href={withBase("/")}>Home</a>
+        <a href={withBase("/#work")}>Work</a>
+        <a href={withBase("/about")}>About</a>
+        <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      </div>
+    </details>
+  </div>
+</header>
+
+<style>
+  .skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    z-index: 100;
+    padding: var(--space-xs) var(--space-sm);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+  }
+
+  .skip-link:focus {
+    top: 0;
+  }
+
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background-color: var(--color-surface);
+    border-bottom: 1px solid transparent;
+  }
+
+  /* Bottom border fades in only once the page has scrolled. Pure CSS via
+     scroll-driven animation; browsers without support simply keep the
+     border transparent, which is a safe fallback, not a broken one. */
+  @supports (animation-timeline: scroll()) {
+    .site-header {
+      animation: reveal-header-border linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 40px;
+    }
+  }
+
+  @keyframes reveal-header-border {
+    from {
+      border-bottom-color: transparent;
+    }
+    to {
+      border-bottom-color: var(--color-border);
+    }
+  }
+
+  .site-header__bar {
+    max-width: min(var(--width-media), 100% - 2 * var(--space-gutter));
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    padding-block: var(--space-sm);
+  }
+
+  .site-header__wordmark {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .site-header__logo {
+    display: block;
+    height: 1.75rem;
+    width: auto;
+  }
+
+  .site-header__nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+  }
+
+  /* Touch target floor (44x44) on the plain text nav links — the CTA
+     button already clears it via .button's own min-height/min-width.
+     Colour is dark text rather than the global `a` rule's
+     --color-brand-deep — Aesop's header reads as one even, monochrome
+     set of links, not a set of coloured hyperlinks. Body copy links
+     elsewhere are unaffected. */
+  .site-header__nav > a:not(.button) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    color: var(--color-text);
+  }
+
+  .site-header__menu {
+    display: none;
+  }
+
+  .site-header__menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .site-header__menu-toggle::-webkit-details-marker {
+    display: none;
+  }
+
+  .site-header__menu-icon {
+    position: relative;
+    width: 1.25rem;
+    height: 2px;
+    background-color: var(--color-text);
+  }
+
+  .site-header__menu-icon::before,
+  .site-header__menu-icon::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 1.25rem;
+    height: 2px;
+    background-color: var(--color-text);
+  }
+
+  .site-header__menu-icon::before {
+    top: -6px;
+  }
+
+  .site-header__menu-icon::after {
+    top: 6px;
+  }
+
+  /* Setting display on this element unconditionally would override the
+     browser's native "hide everything but <summary> while <details>
+     is closed" behaviour — author-origin styles beat UA styles at any
+     specificity. Gating on the [open] attribute keeps that native
+     behaviour intact instead of fighting it. */
+  .site-header__menu-panel {
+    display: none;
+  }
+
+  .site-header__menu[open] .site-header__menu-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+    padding: var(--space-md) var(--space-sm) var(--space-lg);
+    background-color: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .site-header__menu-panel > a:not(.button) {
+    display: inline-flex;
+    align-items: center;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    color: var(--color-text);
+  }
+
+  @media (max-width: 768px) {
+    .site-header__nav {
+      display: none;
+    }
+
+    .site-header__menu {
+      display: block;
+    }
+  }
+</style>

@@ -1,0 +1,40 @@
+---
+import "../styles/global.css";
+import { withBase } from "../lib/site";
+
+interface Props {
+  src: string;
+  alt: string;
+  caption: string;
+  mode?: "cover" | "contain";
+  ratio?: "wide" | "standard" | "tall" | "square";
+  position?: string;
+  fullBleed?: boolean;
+}
+
+const {
+  src,
+  alt,
+  caption,
+  mode = "contain",
+  ratio = "wide",
+  position = "center",
+  fullBleed = true,
+} = Astro.props;
+---
+
+<figure
+  class="figure"
+  data-mode={mode}
+  data-ratio={mode === "cover" ? ratio : undefined}
+  data-full-bleed={fullBleed ? "true" : "false"}
+>
+  <img
+    src={withBase(src)}
+    alt={alt}
+    loading="lazy"
+    data-fade
+    style={mode === "cover" ? `object-position: ${position};` : undefined}
+  />
+  <figcaption>{caption}</figcaption>
+</figure>

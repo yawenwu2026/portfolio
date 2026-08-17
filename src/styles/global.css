@@ -1,0 +1,219 @@
+@import "./tokens.css";
+@import "./blocks.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--size-body);
+  line-height: var(--leading-body);
+  letter-spacing: var(--tracking-body);
+}
+
+/* Body-size link text: must be brand-deep, not brand. See the contrast
+   reference at the bottom of tokens.css. --color-brand (#4D70B8) only
+   clears AA at 24px+ / 19px bold, which no link text in this project is. */
+a {
+  color: var(--color-brand-deep);
+  text-decoration-line: underline;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 150ms ease;
+}
+
+a:hover {
+  text-decoration-color: currentColor;
+}
+
+/* Animation 2 of 2: fade-in on scroll for images. Elements get [data-fade]
+   in markup; a small script (see BaseLayout) adds .is-visible once each
+   scrolls into view. */
+[data-fade] {
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+[data-fade].is-visible {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a {
+    transition: none;
+  }
+
+  [data-fade] {
+    opacity: 1;
+    transition: none;
+  }
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-heading);
+  font-weight: var(--weight-heading);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-heading);
+}
+
+h1 {
+  font-size: var(--size-h1);
+}
+
+h2 {
+  font-size: var(--size-h2);
+}
+
+h3 {
+  font-size: var(--size-h3);
+}
+
+small {
+  font-size: var(--size-sm);
+}
+
+/* Fluid-first width formulas: never wider than the token cap, never
+   closer to the viewport edge than the gutter. Replaces the old
+   fixed max-width + separate .page padding approach. */
+.prose {
+  max-width: min(var(--width-prose), 100% - 2 * var(--space-gutter));
+  margin-inline: auto;
+}
+
+.media {
+  max-width: min(var(--width-media), 100% - 2 * var(--space-gutter));
+  margin-inline: auto;
+}
+
+.page {
+  padding-inline: var(--space-gutter);
+}
+
+/* Case study body copy. Lives here rather than as a scoped style on
+   CaseStudy.astro because these children come from a rendered MDX
+   <Content /> collection entry, not literal template markup — Astro
+   does not attach its scoping attribute to that output, so a scoped
+   selector here would silently never match. */
+.case-study-body > * + * {
+  margin-top: var(--space-md);
+}
+
+/* Each h2 section (Context, The Problem, Process, Solution...) is
+   wrapped in the Markdown/MDX source as <div class="section-tint">,
+   one per top-level heading. The wrapper is what makes a per-section
+   background tint possible at all — painting a background "from this
+   h2 to the next" isn't expressible in CSS without a real container,
+   sibling selectors can't span a variable run of elements. Full-bleed
+   here, un-tinted content re-establishes the prose/media measure
+   inside. Alternating tone rather than a hairline rule is the same
+   technique as tokens.css's --color-surface: one step deeper than the
+   page background, not a hard edge. */
+.section-tint {
+  padding-block: var(--space-section);
+}
+
+/* Overrides the generic .case-study-body > * + * rhythm above — the
+   section's own padding-block already creates the gap between one
+   section and the next, so stacking the paragraph-level margin on
+   top would double it. */
+.case-study-body > .section-tint + .section-tint {
+  margin-top: 0;
+}
+
+.section-tint:nth-of-type(odd) {
+  background-color: var(--color-bg);
+}
+
+.section-tint:nth-of-type(even) {
+  background-color: var(--color-surface);
+}
+
+/* Section headings (Context, The Problem, Process...) need to read as
+   scan anchors when someone is skimming a long case study rather than
+   reading it end to end — bigger than the generic --size-h2 used for
+   card titles elsewhere, still --weight-heading (light) so the size
+   itself carries the emphasis, the same way Footer's "Let's connect"
+   reads as a clear heading at 44px despite being a light weight.
+   Colour is --color-brand rather than brand-deep: at this size (28px+)
+   it clears 4.5:1 comfortably, and tokens.css reserves brand for
+   headings specifically, brand-deep for body-size text and links. */
+.case-study-body h2 {
+  margin-bottom: var(--space-sm);
+  color: var(--color-brand);
+  font-size: clamp(1.75rem, 1.3rem + 2vw, 2.5rem);
+}
+
+/* Full-width block classes (figures, diagrams, stat rows, etc.) manage
+   their own max-width in blocks.css and are excluded so this rule
+   doesn't fight them. */
+.section-tint > :not(.figure):not(.wide-diagram):not(.stat-row):not(.key-points):not(.figure-pair):not(.figure-row):not(.wide):not(blockquote):not(.callout):not(.step-heading) {
+  max-width: min(var(--width-prose), 100% - 2 * var(--space-gutter));
+  margin-inline: auto;
+}
+
+.section-tint > * + * {
+  margin-top: var(--space-md);
+}
+
+/* Primary CTA button: shared by the header and footer. Contrast verified
+   against tokens.css's reference table: --color-brand-deep and
+   --color-text-inverse are the same pair as --color-brand-deep on
+   --color-bg (5.98:1), just with the two roles swapped, so the ratio is
+   identical and clears both 4.5:1 text and 3:1 UI-component AA.
+   min-height/min-width: 44px touch target floor. */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  padding: var(--space-xs) var(--space-md);
+  background-color: var(--color-brand-deep);
+  color: var(--color-text-inverse);
+  border-radius: var(--radius-pill);
+  font-size: var(--size-sm);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* Markdown tables: horizontally scrollable with a permanent edge fade
+   as the "there's more" affordance. display:block lets overflow-x
+   apply directly to <table> — no wrapper element needed. The fade is
+   pinned to the table's own right edge (default background-attachment
+   doesn't scroll with the table's internal overflow content), so it
+   stays put as a constant hint rather than tracking scroll position. */
+table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  background-image: linear-gradient(to left, var(--color-bg), transparent 24px);
+  background-repeat: no-repeat;
+  background-position: top right;
+  background-size: 24px 100%;
+}
+
+table :is(th, td) {
+  padding: var(--space-xs) var(--space-sm);
+  border: 1px solid var(--color-border);
+  text-align: left;
+}
+
+/* --color-accent is decorative only (1.48:1 against --color-bg, see
+   tokens.css) and would fail the 3:1 UI-component contrast a focus ring
+   needs. --color-brand-deep (5.98:1) is used here instead. */
+:focus-visible {
+  outline: 2px solid var(--color-brand-deep);
+  outline-offset: 2px;
+}

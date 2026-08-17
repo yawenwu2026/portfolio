@@ -1,0 +1,114 @@
+---
+// 11. CARD GRID — 3 across at 1024px, 2 at 768px, 1 below.
+interface Card {
+  href: string;
+  image: string;
+  imageAlt: string;
+  title: string;
+  company: string;
+  timeline: string;
+  summary: string;
+}
+
+interface Props {
+  cards: Card[];
+}
+
+const { cards } = Astro.props;
+---
+
+<div class="card-grid">
+  {
+    cards.map((card) => (
+      <a class="block-card" href={card.href}>
+        <div class="block-card__image-wrap">
+          <img class="block-card__image" src={card.image} alt={card.imageAlt} loading="lazy" />
+        </div>
+        <div class="block-card__body">
+          <h3 class="block-card__title">{card.title}</h3>
+          <p class="block-card__meta">
+            {card.company} · {card.timeline}
+          </p>
+          <p class="block-card__summary">{card.summary}</p>
+        </div>
+      </a>
+    ))
+  }
+</div>
+
+<style>
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+    max-width: min(var(--width-media), 100% - 2 * var(--space-gutter));
+    margin-inline: auto;
+  }
+
+  .block-card {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .block-card__image-wrap {
+    overflow: hidden;
+    aspect-ratio: var(--ratio-wide);
+    background-color: var(--color-surface);
+  }
+
+  .block-card__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 200ms ease;
+  }
+
+  .block-card:hover .block-card__image {
+    transform: scale(1.02);
+  }
+
+  .block-card__title {
+    margin: var(--space-sm) 0 var(--space-xs);
+    font-size: var(--size-h3);
+    font-weight: var(--weight-semibold);
+    text-decoration-line: underline;
+    text-decoration-color: transparent;
+    transition: text-decoration-color 150ms ease;
+  }
+
+  .block-card:hover .block-card__title {
+    text-decoration-color: currentColor;
+  }
+
+  .block-card__meta {
+    margin: 0 0 var(--space-xs);
+    color: var(--color-text-muted);
+    font-size: var(--size-sm);
+  }
+
+  .block-card__summary {
+    margin: 0;
+    color: var(--color-text);
+  }
+
+  @media (min-width: 768px) {
+    .card-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .card-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .block-card__image,
+    .block-card__title {
+      transition: none;
+    }
+  }
+</style>

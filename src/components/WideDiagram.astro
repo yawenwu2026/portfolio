@@ -1,0 +1,49 @@
+---
+// Dense, detailed diagrams that become unreadable below 1024px. Below
+// that width, the image shows small with a "Tap to enlarge" affordance;
+// tapping opens a native <dialog> with the image at full resolution in
+// a scrollable, pinch-zoomable view. Above 1024px it just renders as a
+// normal full-width figure — the trigger is inert.
+//
+// No client:visible here: that directive only hydrates UI-framework
+// components (React/Vue/etc.), and this project has none installed.
+// The open/close behaviour lives in one shared <script> in
+// CaseStudy.astro instead, event-delegated so it works for every
+// instance on the page — including ones injected as raw HTML by
+// src/lib/case-study-figure.mjs, which never instantiates this
+// component and so would never load a script placed here.
+import { withBase } from "../lib/site";
+
+interface Props {
+  src: string;
+  alt: string;
+  caption: string;
+}
+
+const { src, alt, caption } = Astro.props;
+---
+
+<figure class="wide-diagram" data-wide-diagram>
+  <button type="button" class="wide-diagram__trigger" data-wide-trigger aria-haspopup="dialog">
+    <img src={withBase(src)} alt={alt} loading="lazy" data-fade />
+    <span class="wide-diagram__hint">Tap to enlarge</span>
+  </button>
+  <figcaption>{caption}</figcaption>
+
+  <dialog class="wide-diagram__dialog" data-wide-dialog aria-label={alt}>
+    <button type="button" class="wide-diagram__close" data-wide-close aria-label="Close enlarged image">
+      &times;
+    </button>
+    <div class="wide-diagram__scroll">
+      <img src={withBase(src)} alt={alt} />
+    </div>
+  </dialog>
+</figure>
+
+<!-- Styling lives in src/styles/blocks.css, not a scoped <style> here —
+     src/lib/case-study-figure.mjs emits this same markup as raw HTML for
+     tramtracker.md / naviking.md, which never instantiates this component
+     and so never carries its scope attribute. A scoped style here would
+     only ever reach the one real usage (fsm-mobile.mdx), not the other
+     seven. Same reasoning as Figure.astro / .figure. -->
+

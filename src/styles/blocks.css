@@ -1,0 +1,610 @@
+/* ============================================================
+   Section block library — the classes below are the only markdown
+   content patterns the site uses. Drop the raw HTML straight into a
+   .md/.mdx file; no MDX or wrapper component required.
+
+   Breakpoints: 768px and 1024px, used as raw px values throughout
+   this file (CSS custom properties don't work inside @media
+   conditions, so there is nothing to reference from tokens.css).
+
+   Widths are fluid-first: min(token, 100% - 2 * --space-gutter) rather
+   than a fixed max-width, so content never sits closer to the viewport
+   edge than the gutter, at any size, without a breakpoint for it.
+   ============================================================ */
+
+/* ---- 1. FIGURE --------------------------------------------------
+   Default rendering for every Markdown image. Shared by the
+   <Figure /> component (src/components/Figure.astro) and the
+   plain-Markdown image auto-detect plugin, so both render
+   identically — see src/lib/case-study-figure.mjs. */
+.figure {
+  margin-inline: auto;
+}
+
+.figure[data-full-bleed="true"] {
+  max-width: min(var(--width-media), 100% - 2 * var(--space-gutter));
+}
+
+.figure[data-full-bleed="false"] {
+  max-width: min(var(--width-prose), 100% - 2 * var(--space-gutter));
+}
+
+.figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.figure[data-mode="cover"] {
+  overflow: hidden;
+}
+
+.figure[data-mode="cover"] img {
+  height: 100%;
+  object-fit: cover;
+}
+
+.figure[data-ratio="wide"] {
+  aspect-ratio: var(--ratio-wide);
+}
+
+.figure[data-ratio="standard"] {
+  aspect-ratio: var(--ratio-standard);
+}
+
+.figure[data-ratio="tall"] {
+  aspect-ratio: var(--ratio-tall);
+}
+
+.figure[data-ratio="square"] {
+  aspect-ratio: var(--ratio-square);
+}
+
+.figure figcaption {
+  max-width: min(var(--width-prose), 100% - 2 * var(--space-gutter));
+  margin-inline: auto;
+  margin-top: var(--space-xs);
+  color: var(--color-text-muted);
+  font-size: var(--size-sm);
+}
+
+/* ---- 2. FIGURE PAIR ----------------------------------------------
+   <div class="figure-pair"><figure>...</figure><figure>...</figure></div>
+   For before/after. Side by side above 768px, stacked below. Each
+   figure keeps its own caption — heights are not forced to match. */
+.figure-pair {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-md);
+  max-width: min(var(--width-media), 100% - 2 * var(--space-gutter));
+  margin: var(--space-lg) auto;
+}
+
+.figure-pair figure {
+  margin: 0;
+  width: 100%;
+}
+
+.figure-pair figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.figure-pair figcaption {
+  margin-top: var(--space-xs);
+  color: var(--color-text-muted);
+  font-size: var(--size-sm);
+}
+
+@media (min-width: 768px) {
+  .figure-pair {
+    flex-direction: row;
+  }
+
+  .figure-pair figure {
+    flex: 1;
+    width: auto;
+  }
+}
+
+/* ---- 3. PULL QUOTE -------------------------------------------------
+   A plain Markdown "> quote" renders as a pull quote automatically —
+   no class needed. No quotation marks are added; the left rule and
+   type size carry the emphasis. */
+blockquote {
+  margin: var(--space-lg) auto;
+  max-width: min(var(--width-prose), 100% - 2 * var(--space-gutter));
+  padding-left: var(--space-md);
+  border-left: 3px solid var(--color-accent);
+  font-size: var(--size-lg);
+  font-style: normal;
+  color: var(--color-brand-deep);
+}
+
+blockquote > *:first-child {
+  margin-top: 0;
+}
+
+blockquote > *:last-child {
+  margin-bottom: 0;
+}
+
+/* ---- 4. CALLOUT ----------------------------------------------------
+   <aside class="callout">...</aside>. For asides like the FSM case's
+   measurement note. */
+.callout {
+  margin: var(--space-lg) auto;
+  max-width: min(var(--width-prose), 100% - 2 * var(--space-gutter));
+  padding: var(--space-md);
+  background-color: var(--color-surface);
+  border-left: 3px solid var(--color-brand);
+  font-size: var(--size-sm);
+}
+
+.callout > *:first-child {
+  margin-top: 0;
+}
+
+.callout > *:last-child {
+  margin-bottom: 0;
+}
+
+/* ---- 5. KEY POINTS --------------------------------------------------
+   <div class="key-points"><ul><li><strong>Lead phrase.</strong> Rest of
+   the point.</li>...</ul></div>. The bold lead-in is just Markdown
+   **bold** — no special markup beyond that. 2 columns above 768px. */
+.key-points {
+  margin: var(--space-lg) auto;
+  max-width: min(var(--width-media), 100% - 2 * var(--space-gutter));
+}
+
+.key-points ul {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.key-points li {
+  color: var(--color-text-muted);
+}
+
+.key-points li strong {
+  color: var(--color-text);
+}
+
+@media (min-width: 768px) {
+  .key-points ul {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-md) var(--space-lg);
+  }
+}
+
+/* ---- 6. STAT ROW -----------------------------------------------------
+   <div class="stat-row"><div class="stat"><p>17</p><p>Technicians</p>
+   </div>...</div>. First child of .stat is the number, second is the
+   label — order matters, nothing else marks which is which. */
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+  max-width: min(var(--width-media), 100% - 2 * var(--space-gutter));
+  margin: var(--space-lg) auto;
+}
+
+.stat {
+  padding-left: var(--space-sm);
+  border-left: 3px solid var(--color-accent);
+}
+
+.stat > :first-child {
+  margin: 0;
+  font-size: var(--size-h2);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.stat > :last-child {
+  margin: var(--space-xs) 0 0;
+  font-size: var(--size-xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-caps);
+  color: var(--color-text-muted);
+}
+
+@media (min-width: 768px) {
+  /* auto-fit rather than a fixed 3 or 4: renders whichever the content
+     actually has (minmax's 160px floor is a practical minimum for this
+     specific grid, not a reusable design value, so it stays a raw
+     number rather than a token). */
+  .stat-row {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  }
+}
+
+/* ---- 7. WIDE DIAGRAM ---------------------------------------------------
+   <figure class="wide"> wrapping one image. Below 1024px, tapping the
+   image opens a full-screen enlargement; above 1024px it just renders
+   at full --width-media and the tap interaction is inert.
+
+   Needs a checkbox + two labels sharing one id, unique per instance:
+
+   <figure class="wide">
+     <input type="checkbox" id="wide-1" class="wide__toggle" />
+     <label for="wide-1" class="wide__trigger" aria-label="Enlarge image">
+       <img src="..." alt="..." loading="lazy" />
+     </label>
+     <label for="wide-1" class="wide__overlay" aria-label="Close enlarged image">
+       <img src="..." alt="..." />
+     </label>
+     <figcaption>...</figcaption>
+   </figure>
+
+   Give every instance on a page a different id — reusing one breaks
+   both. Pure CSS, no JavaScript. */
+.wide {
+  max-width: min(var(--width-media), 100% - 2 * var(--space-gutter));
+  margin: var(--space-lg) auto;
+}
+
+.wide__toggle {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.wide__trigger {
+  display: block;
+}
+
+.wide__trigger img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.wide figcaption {
+  max-width: min(var(--width-prose), 100% - 2 * var(--space-gutter));
+  margin: var(--space-xs) auto 0;
+  color: var(--color-text-muted);
+  font-size: var(--size-sm);
+}
+
+.wide__overlay {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .wide__trigger img {
+    cursor: zoom-in;
+  }
+
+  .wide__toggle:checked ~ .wide__overlay {
+    display: flex;
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-md);
+    background-color: var(--color-inverse-bg);
+    cursor: zoom-out;
+  }
+
+  .wide__overlay img {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+  }
+}
+
+@media (min-width: 1024px) {
+  .wide__trigger {
+    pointer-events: none;
+  }
+}
+
+/* ---- 8. PROCESS STEP -----------------------------------------------
+   <div class="step-heading"><span class="step">1</span>### Heading</div>.
+   The wrapper matters: .step floats left, and a float positions itself
+   against its containing block's edge, not against a sibling's own
+   auto-centered margins — without a shared wrapper the number would
+   float to the edge of the full case-study-body column instead of
+   sitting next to its heading. The wrapper also needs its own clearfix
+   so its height doesn't collapse to zero around the floated child. */
+.step-heading {
+  max-width: min(var(--width-prose), 100% - 2 * var(--space-gutter));
+  margin-inline: auto;
+}
+
+.step-heading::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.step {
+  display: block;
+  float: left;
+  margin-right: var(--space-md);
+  font-family: var(--font-heading);
+  font-size: var(--size-h2);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--color-text-muted);
+}
+
+/* Harmless when nothing precedes it: clear only matters if a float is
+   actually in flow, so this is safe on every h3 in the document, not
+   just ones with a .step before them. */
+h3 + * {
+  clear: both;
+}
+
+@media (max-width: 1023px) {
+  .step {
+    float: none;
+    display: block;
+    margin-right: 0;
+    margin-bottom: var(--space-xs);
+  }
+}
+
+/* ---- WIDE DIAGRAM (tap-to-expand island) --------------------------
+   src/components/WideDiagram.astro. Global, not scoped, because
+   src/lib/case-study-figure.mjs emits the identical markup as raw HTML
+   for the seven instances in tramtracker.md / naviking.md, which never
+   render the real component and so never carry an Astro scope
+   attribute — a scoped <style> in the component would only ever reach
+   the one real usage (fsm-05 in fsm-mobile.mdx). Distinct from the
+   plain-CSS "WIDE DIAGRAM" block above (.wide): that one is a generic
+   enlarge-on-tap for any image; this one is specifically for the eight
+   dense/detailed diagrams named in case-study-figure.mjs, with a
+   scrollable native <dialog> at full resolution rather than a simple
+   centred enlargement. */
+.wide-diagram {
+  max-width: min(var(--width-media), 100% - 2 * var(--space-gutter));
+  margin: var(--space-lg) auto;
+}
+
+.wide-diagram__trigger {
+  display: block;
+  position: relative;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+}
+
+.wide-diagram__trigger img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.wide-diagram__hint {
+  display: none;
+  position: absolute;
+  right: var(--space-sm);
+  bottom: var(--space-sm);
+  padding: var(--space-xs) var(--space-sm);
+  background-color: var(--color-inverse-bg);
+  color: var(--color-text-inverse);
+  font-size: var(--size-xs);
+  border-radius: var(--radius);
+}
+
+.wide-diagram figcaption {
+  max-width: min(var(--width-prose), 100% - 2 * var(--space-gutter));
+  margin: var(--space-xs) auto 0;
+  color: var(--color-text-muted);
+  font-size: var(--size-sm);
+}
+
+.wide-diagram__dialog {
+  padding: 0;
+  border: none;
+  width: 100%;
+  height: 100%;
+  max-width: 100vw;
+  max-height: 100vh;
+  background-color: var(--color-inverse-bg);
+}
+
+.wide-diagram__dialog::backdrop {
+  background-color: var(--color-inverse-bg);
+}
+
+.wide-diagram__scroll {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  padding: var(--space-lg) var(--space-md);
+}
+
+.wide-diagram__scroll img {
+  display: block;
+  width: auto;
+  max-width: none;
+  height: auto;
+}
+
+.wide-diagram__close {
+  position: fixed;
+  top: var(--space-sm);
+  right: var(--space-sm);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border: none;
+  border-radius: var(--radius);
+  font-size: var(--size-h3);
+  line-height: 1;
+  cursor: pointer;
+}
+
+@media (max-width: 1023px) {
+  .wide-diagram__hint {
+    display: block;
+  }
+
+  .wide-diagram__trigger {
+    cursor: zoom-in;
+  }
+}
+
+@media (min-width: 1024px) {
+  .wide-diagram__trigger {
+    pointer-events: none;
+  }
+}
+
+/* ---- 9. FIGURE ROW -------------------------------------------------
+   <div class="figure-row"><p>...</p><Figure .../></div>
+   Pairs the text that introduces a screenshot with the screenshot
+   itself, stacked at every width. Only for a Figure with exactly one
+   text block ahead of it; a Figure with no natural text partner
+   (opens a section, or sits back-to-back with another Figure) stays a
+   plain full-width .figure, and two Figures with no text between them
+   use .figure-pair instead.
+   Capped at width-prose, not width-media: this is excluded from the
+   generic .section-tint prose-centring rule (see global.css) because
+   it used to need the wider width-media measure for its two-column
+   grid. Now that it's always a single stacked column, keeping that
+   wider cap left its lead paragraph's left edge sitting further out
+   than every other paragraph and heading in the section — matching
+   width-prose here re-aligns it with the rest of the prose flow. */
+.figure-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+  max-width: min(var(--width-prose), 100% - 2 * var(--space-gutter));
+  margin-inline: auto;
+}
+
+/* Overrides .figure's own width-media / width-prose cap (see block 1).
+   Now that figure-row is always a stacked single column, letting the
+   image run out to the row's full width-media cap (1200px) made
+   portrait screenshots balloon to poster size. 560px keeps it close
+   to the width it held back when this was a two-column grid, higher
+   specificity than the attribute-only selectors in block 1 wins
+   without !important. */
+.figure-row .figure[data-full-bleed] {
+  max-width: min(560px, 100%);
+  margin-inline: auto;
+}
+
+/* Opt-in modifier: <div class="figure-row figure-row--wide"> for a
+   figure with enough detail (a multi-variant comparison, a design
+   system sheet) that the standard 560px cap makes it hard to read.
+   Fills the row's own width-prose track (720px) rather than the
+   560px default — still capped to the row, not bled wider, so the
+   row's own alignment with the rest of the section stays intact. */
+.figure-row--wide .figure[data-full-bleed] {
+  max-width: 100%;
+  margin-inline: 0;
+}
+
+/* ---- 10. PROCESS ACCORDION ------------------------------------------
+   <details class="process-step">
+     <summary class="process-step__summary">
+       <span class="step">1</span>
+       ### Heading
+       <span class="process-step__toggle">
+         <span class="process-step__toggle-closed">View more</span>
+         <span class="process-step__toggle-open">View less</span>
+       </span>
+     </summary>
+     <div class="process-step__content">...</div>
+   </details>
+   Collapsed by default (no `open` attribute) — a long Process section
+   reads as a scannable list of numbered steps first, and each step's
+   figures/diagrams only load into view once expanded. Pure <details>,
+   no script: same pattern as the header's mobile menu toggle. */
+.process-step {
+  border-top: 1px solid var(--color-border);
+}
+
+.process-step + .process-step {
+  margin-top: 0;
+}
+
+.process-step:last-of-type {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.process-step__summary {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-md);
+  padding-block: var(--space-md);
+  cursor: pointer;
+  list-style: none;
+}
+
+.process-step__summary::-webkit-details-marker {
+  display: none;
+}
+
+.process-step__summary h3 {
+  flex: 1;
+  margin: 0;
+}
+
+.process-step__toggle {
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+  font-size: var(--size-sm);
+  text-decoration-line: underline;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 150ms ease;
+}
+
+.process-step__summary:hover .process-step__toggle {
+  text-decoration-color: currentColor;
+}
+
+.process-step__toggle-open {
+  display: none;
+}
+
+.process-step[open] .process-step__toggle-open {
+  display: inline;
+}
+
+.process-step[open] .process-step__toggle-closed {
+  display: none;
+}
+
+.process-step__content {
+  padding-bottom: var(--space-lg);
+}
+
+.process-step__content > :not(.figure):not(.wide-diagram):not(.stat-row):not(.key-points):not(.figure-pair):not(.figure-row):not(.wide):not(blockquote):not(.callout) {
+  max-width: min(var(--width-prose), 100% - 2 * var(--space-gutter));
+  margin-inline: auto;
+}
+
+.process-step__content > * + * {
+  margin-top: var(--space-md);
+}
+
+@media (max-width: 767px) {
+  .process-step__summary {
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+}

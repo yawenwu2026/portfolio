@@ -1,0 +1,334 @@
+---
+title: "FSM Mobile UI Redesign"
+subtitle: "Rebuilding a field service app around how technicians actually work"
+company: "Next Technik"
+role: "UX/UI Designer, User Researcher"
+team: "1 Product Manager, 4 Developers"
+platform: "Responsive hybrid mobile app (iOS and Android, 4.7\" phones to 12.9\" tablets)"
+timeline: "Jun 2021 - Mar 2023"
+order: 1
+isPersonalProject: false
+coverImage: "/images/fsm/fsm-cover-technician-in-ute.png"
+coverAlt: "A field service technician using a mobile app inside his work vehicle"
+coverPosition: "50% 40%"
+summary: "Technicians needed days to weeks of training before they could confidently complete a job in the app. I redesigned the mobile experience around their real workflow, validated it with 9 technicians across 4 countries, and shipped a WCAG AA design system that the product still runs on."
+tags: ["Enterprise B2B", "Field Service", "Mobile", "Design System", "Accessibility"]
+---
+
+import Figure from "../../components/Figure.astro";
+import WideDiagram from "../../components/WideDiagram.astro";
+import { withBase } from "../../lib/site";
+
+<div class="section-tint">
+
+## Context
+
+Field service technicians are the people who show up when your air conditioner breaks down in summer, when your office lift stops working, or when a restaurant's fridge fails during dinner service.
+
+Next Technik builds NextService, an app that plugs directly into NetSuite to extend its ERP capability for field service operations. Schedulers in the office assign tasks and set times. Technicians in the field pick those tasks up on a mobile app, document the work, and sync it back through NetSuite.
+
+I joined in 2021 as Next Technik's first and only UX/UI designer. I knew nothing about field service, and looking back, that helped. I arrived with no assumptions about how any of it was supposed to work.
+
+<div class="figure-row">
+
+My first assignment was the mobile app technicians relied on every day. I couldn't design anything useful without understanding their world first, so I started with the basics: learning the business model from the internal team, then talking directly to technicians about their real challenges.
+
+<Figure src="/images/fsm/fsm-01-product-ecosystem.png" alt="Diagram showing the Scheduler in the office and the Mobile app in the field, both syncing through NetSuite" caption="The two halves of the product. Anything I changed on the mobile side had to stay consistent with what schedulers saw in the office." mode="contain" />
+
+</div>
+
+</div>
+
+<div class="section-tint">
+
+## The Problem
+
+The mobile app worked, but it had been built outward from the data model rather than inward from the job, and the cost showed up everywhere.
+
+Technicians needed anywhere from a few days to several weeks of shadowing before they could use the app independently. Expensive for a customer with high turnover, and it made the product harder to sell.
+
+The interface spoke NetSuite, not English. Terms like Project, Case, Task and Job were used interchangeably, and statuses like "Pending approval" and "Pending fulfillment" meant nothing to someone standing in a plant room. One technician put it precisely: what he needed to learn wasn't the app, it was how his company wanted him to use it.
+
+Sync status was invisible, so technicians emailed job details to themselves as a manual backup in case the app failed to save. Refreshing the job list could take over 40 seconds, done many times a day often at the roadside with poor reception, and completed jobs disappeared from the list entirely.
+
+<div class="figure-row">
+
+Forms were the hardest part. Adding parts to a Sales Order meant picking items one at a time from long dropdowns. Fields like "Close Case" were easy to miss, there was no copy and paste, and photos could only be uploaded one at a time.
+
+<Figure src="/images/fsm/fsm-02-original-ui.png" alt="Screenshots of the original job list, job detail page and hazard analysis form" caption="The interface before the redesign. Dense, undifferentiated, and built around the data structure rather than the task." mode="contain" />
+
+</div>
+
+</div>
+
+<div class="section-tint">
+
+## Process
+
+<details class="process-step">
+<summary class="process-step__summary">
+<span class="step">1</span>
+
+### Research: 17 technicians, 12 companies, 3 countries
+
+<span class="process-step__toggle"><span class="process-step__toggle-closed">View more</span><span class="process-step__toggle-open">View less</span></span>
+</summary>
+<div class="process-step__content">
+
+I ran one-on-one interviews over Zoom, 45 minutes to 90 minutes each, with a note taker from the product or engineering team in every session. Participants shared their phone screen and walked me through real jobs rather than describing them.
+
+<div class="stat-row">
+  <div class="stat"><p>17</p><p>Field technicians</p></div>
+  <div class="stat"><p>12</p><p>Companies</p></div>
+  <div class="stat"><p>3</p><p>Countries</p></div>
+</div>
+
+17 field technicians across 12 companies in the US, Australia and New Zealand. Eight companies had technicians on phones, four on tablets, which mattered a great deal for the responsive work later.
+
+Bringing a developer or PM to sessions was deliberate. Hearing a technician describe a 40 second wait at the roadside turns a sync performance debate into a shared problem.
+
+</div>
+</details>
+
+<details class="process-step">
+<summary class="process-step__summary">
+<span class="step">2</span>
+
+### Synthesis: four needs, one persona, one journey
+
+<span class="process-step__toggle"><span class="process-step__toggle-closed">View more</span><span class="process-step__toggle-open">View less</span></span>
+</summary>
+<div class="process-step__content">
+
+The findings clustered into four needs:
+
+<div class="key-points">
+<ul>
+<li><strong>Reduce training requirements.</strong> Technicians struggled with NetSuite jargon like "Project, Case, Task, Job" and unclear statuses like "Pending approval". Sync status wasn't visible, and errors gave no way to fix them.</li>
+<li><strong>Easier information finding and updating.</strong> Key details were hard to scan quickly, and technicians couldn't update wrong addresses or contact details on site. They needed search, sort and filter for past and upcoming jobs.</li>
+<li><strong>Better documentation and forms.</strong> Complex dropdowns and easy-to-miss fields like "Close Case" caused errors. No copy and paste, no multi photo upload, and inputs that weren't mobile friendly.</li>
+<li><strong>Improved communication.</strong> No way to message between technicians and dispatchers, limited customer communication, and no SMS templates or in-app notifications.</li>
+</ul>
+</div>
+
+<div class="figure-row">
+
+I built a persona, Tom, from the interview data: 45, over ten years servicing HVAC, standard hours 8am to 4pm, always wears glasses on site. His pain points came up across every company: emailing himself job details as a backup in case the app failed to save, over 40 seconds to refresh a job list he checks many times a day, and more time spent talking to the office than doing the work. In his words: "The process just needed to be streamlined, so it's faster for us to do what we need to do."
+
+<Figure src="/images/fsm/fsm-04-persona-tom.png" alt="Persona card for Tom, a 45 year old HVAC team lead" caption="Tom was assembled from patterns that repeated across all twelve organisations, not from a single memorable interview." mode="contain" />
+
+</div>
+
+I then mapped a full day, from checking the job list the night before to the call, days later, asking about a job that was never marked complete. The worst friction wasn't inside any single screen. It was in the gaps: the roadside wait, the call to the office for a note the app wouldn't show him, the manual email backup.
+
+<WideDiagram src="/images/fsm/fsm-05-user-journey.png" alt="End to end user journey map covering the night before through to days after a job" caption="The journey map made the case for work that no single screen redesign would have surfaced." />
+
+</div>
+</details>
+
+<details class="process-step">
+<summary class="process-step__summary">
+<span class="step">3</span>
+
+### Define the visual direction
+
+<span class="process-step__toggle"><span class="process-step__toggle-closed">View more</span><span class="process-step__toggle-open">View less</span></span>
+</summary>
+<div class="process-step__content">
+
+I built a UI mood board with the development team, collecting references to set a shared visual language before drawing any screens. Agreeing the direction together, rather than presenting it, removed a whole category of argument later.
+
+<div class="figure-row">
+
+The references pointed consistently to a rugged, high contrast, utilitarian direction: work vehicles, tools, high visibility clothing, industrial environments. That's the world the product lives in, and it justified leading with a dark theme.
+
+<Figure src="/images/fsm/fsm-06-mood-board.png" alt="UI mood board and collected visual references" caption="Building the mood board with developers, not just for them, made the later visual decisions much faster to agree." mode="contain" />
+
+</div>
+
+</div>
+</details>
+
+<details class="process-step">
+<summary class="process-step__summary">
+<span class="step">4</span>
+
+### Design: four strategies
+
+<span class="process-step__toggle"><span class="process-step__toggle-closed">View more</span><span class="process-step__toggle-open">View less</span></span>
+</summary>
+<div class="process-step__content">
+
+I analysed the existing UI flow, pages and components to define what needed reskinning. Scope covered the login page, job list, job details, map view and the form components, redesigned on mobile first principles.
+
+**Information at your fingertips.** Critical information was hard to find while standing on site. I added a date selector for quick day navigation, redesigned task cards with a clear hierarchy, and added search, sort and filter for past and upcoming jobs.
+
+**Make the invisible visible.** Hidden sync status and unclear system states were causing data loss anxiety and confusion. I added a persistent offline indicator, real-time sync status with badge counters, clear error messages with recovery guidance, and modal warnings before any action that could lose data.
+
+**Forms that work on mobile.** Complex forms led to errors, especially in gloves. I separated required from optional fields, set 44 by 44 pixel minimum touch targets, added inline validation, and put save and cancel in a consistent position at the bottom.
+
+**Reduce communication friction.** Phone calls were interrupting workflow. I added messaging between technicians and dispatchers, SMS templates for common scenarios, and an in-app notification system.
+
+<div class="figure-pair">
+<figure>
+<img src={withBase("/images/fsm/fsm-07-new-ui-screens.png")} alt="Redesigned job list, job details and time entry screens in the dark theme" loading="lazy" />
+<figcaption>The redesigned core flow. Status, sync state and priority are all readable without opening anything.</figcaption>
+</figure>
+<figure>
+<img src={withBase("/images/fsm/fsm-08-flow-and-scope.png")} alt="UI flow diagram and screens showing scope of the redesign" loading="lazy" />
+<figcaption>Scope of the reskin: login, job list, job details, map, and the shared form components.</figcaption>
+</figure>
+</div>
+
+</div>
+</details>
+
+<details class="process-step">
+<summary class="process-step__summary">
+<span class="step">5</span>
+
+### Internal testing
+
+<span class="process-step__toggle"><span class="process-step__toggle-closed">View more</span><span class="process-step__toggle-open">View less</span></span>
+</summary>
+<div class="process-step__content">
+
+I gathered feedback from 18 internal team members on the proposed designs to catch usability issues and validate decisions before testing with real users. It also built internal agreement, so the external sessions could focus on genuine open questions rather than unresolved internal debates.
+
+</div>
+</details>
+
+<details class="process-step">
+<summary class="process-step__summary">
+<span class="step">6</span>
+
+### Validation with real technicians
+
+<span class="process-step__toggle"><span class="process-step__toggle-closed">View more</span><span class="process-step__toggle-open">View less</span></span>
+</summary>
+<div class="process-step__content">
+
+I ran remote, moderated usability tests with 9 field technicians across 4 countries in June and July 2022. Sessions ran 60 to 75 minutes using two high fidelity Axure prototypes: an interactive dark theme, and a light theme walking the happy path, so I could also read theme preference.
+
+The test plan targeted specific uncertainties rather than general impressions:
+
+<div class="figure-row">
+
+- Could users work the new date picker and understand the counters?
+- Were the map icons legible, and how did they actually use the map?
+- Did the new form template and inline validation help them complete a checklist?
+- Could they find and add parts to a Sales Order through category browse, search and barcode, and adjust quantities or remove items?
+- Which theme did they prefer, tested in a poorly lit indoor environment first?
+
+<Figure src="/images/fsm/fsm-09-usability-test-prototype.png" alt="Axure prototype with the task list, date selector and sort menu" caption="Testing with a working prototype rather than static screens meant I could observe the sort and filter behaviour instead of asking about it." mode="contain" />
+
+</div>
+
+</div>
+</details>
+
+</div>
+
+<div class="section-tint">
+
+## Solution
+
+### Global navigation
+
+<div class="figure-row">
+
+The date selector with visible task counters let technicians move between days and see their workload at a glance. Notification and sync moved into the header, and the log out button, which users had been hitting by accident while reaching for refresh, moved out of the scroll path.
+
+<Figure src="/images/fsm/fsm-10-global-navigation.png" alt="New global navigation with date selector, task counters and map view" caption="The date strip solved the complaint that the app only showed the next two days. Counters tell technicians where the heavy days are before they open anything." mode="contain" />
+
+</div>
+
+### Task summary card
+
+The task card carries most of the weight in this product: it's what a technician reads in the three seconds before deciding whether to open a job. I rebuilt it around what interviews said mattered most, time, address, client and status, with optional slots for site name, task description, an office message, team members and last visit.
+
+<div class="figure-row figure-row--wide">
+
+Each customer configures the product differently, so the card had to work with different fields present or absent. I tested it against real customer configurations rather than an idealised one.
+
+<Figure src="/images/fsm/fsm-11-task-card-variants.png" alt="Four variations of the task summary card showing different configurations" caption="The same component under four different customer configurations. Priority, status and job identity stay readable in all of them." mode="contain" />
+
+</div>
+
+### Form experience
+
+Forms were where the product lost the most time, so this is where the accessibility work concentrated:
+
+<div class="figure-row">
+
+- 4.5:1 minimum contrast for text, 3:1 for UI components, tested in both bright outdoor light and dim indoor spaces
+- 44 by 44 pixel minimum touch targets, sized for gloved hands
+- Status always shown through colour, icon and text together, never colour alone
+- Segmented controls in place of dropdowns
+- New form elements: titles, explanation text, tooltips, notifications, and calls to action in a consistent position at the end
+
+<Figure src="/images/fsm/fsm-12-form-experience.png" alt="Sales Order and checklist forms showing the new input patterns" caption="Segmented controls, explicit form naming, and actions in a predictable place. The checklist selection screen replaced a flow that previously hid required work." mode="contain" />
+
+</div>
+
+### Design system
+
+I documented the full system: colour for light and dark themes, typography, components in every state, icons, spacing and written guidelines, specified across activated, hover, focused, pressed, error, disabled and read only, in both themes.
+
+<div class="figure-row figure-row--wide">
+
+Beyond the component library, I wrote form design guidelines for the consultants who configure the product for each client. They'd had no design guidance before, and this was the piece of work with the longest tail, still shaping the product after the redesign shipped.
+
+<Figure src="/images/fsm/fsm-13-design-system.png" alt="Design system documentation showing typography, colour styles and component states" caption="Both themes, every state. The consultant facing form guidelines mattered as much as the component library, because consultants configure what technicians actually see." mode="contain" />
+
+</div>
+
+<div class="figure-row figure-row--wide">
+
+Those states existed on real screens, not just in the style guide. Every field state, active, hovered, focused, error, disabled, read only, was built out on the job list, task detail and form screens, in both themes.
+
+<Figure src="/images/fsm/fsm-14-final-design-light.png" alt="Job list, task detail and Add New Task form screens showing input field states in both dark and light themes" caption="The light theme carried the same component states as the dark theme, field by field, not just a colour swap." mode="contain" />
+
+</div>
+
+</div>
+
+<div class="section-tint">
+
+## Outcome
+
+**Validation.** 8 of 9 technicians rated the redesign highly positive. In their words: "It's giving us more of the functionality that we've been asking for a while. More user friendly... the ability to sort what they need to see is there." The checklist was called out as much improved: "The submit button at the bottom makes much more sense. Like the error message."
+
+**Issues caught before build.** Three problems surfaced in testing and were fixed before any code was written. The refresh button moved to a fixed top right position after users kept hitting it by accident while scrolling. The date selector's visual prominence increased after some users missed it entirely. And the map gained a loading indicator, so users on a slow connection could tell it was working rather than frozen.
+
+**Shipped.** The product manager wanted to roll out gradually to reduce risk, so Phase 1 was a visual refresh only: no new components, just the updated look and feel applied to the existing structure. The full component library and form guidelines went to the development team and became the foundation the product kept building on.
+
+**Design system adoption.** The WCAG AA component library became the reference for subsequent mobile work, including the Time Tracking and Service Report projects that followed.
+
+{/* TODO: 這一段是整份作品集最需要補強的地方。若你手上有以下任何數據，補進去會顯著提升說服力：
+     1. 改版後客戶端的訓練時間變化（就算是客服團隊的口頭回報也可以）
+     2. 支援工單量或客服來電量的變化
+     3. 測試中的任務完成率、錯誤次數，或完成時間
+     4. Sales Order 加料流程的步驟數 before / after（這個你可以自己數，最容易取得）
+     5. 客戶留存或新客戶簽約時提到 UI 的回饋
+     如果完全沒有，就維持現狀並保留誠實標註，不要編造。 */}
+
+**A note on measurement.** This project ran before the team had analytics instrumented on the mobile app, so the outcomes above are drawn from moderated testing with 9 technicians and qualitative feedback, not production telemetry. I wouldn't present them as statistically significant. Setting up measurement before a redesign, rather than after, is a lesson I took directly into later projects.
+
+</div>
+
+<div class="section-tint">
+
+## Reflection
+
+**Domain ignorance was an asset, briefly.** Arriving without field service knowledge meant I asked questions people inside the industry had stopped asking. That advantage has a short half life. Within a few months I'd absorbed enough of the internal vocabulary that I had to work deliberately to keep hearing the product the way a new technician would.
+
+**Being the only designer means choosing what not to do.** With one designer, one PM and four developers, the constraint was never ideas. Research surfaced far more opportunity than the team could build, including features like route planning, drag to reschedule, and standalone parts management that customers actively wanted. Writing down what we were deliberately not doing, and why, was some of the most useful work I did.
+
+**The design system outlived the redesign.** The visual refresh was the visible deliverable, but the component library and the consultant facing guidelines were what kept paying off. I'd sequence the guidelines earlier next time, because consultants were shaping the technician experience the entire time I was redesigning screens.
+
+**Instrument first.** The single change that would most improve this case study is data I don't have. On later projects I made analytics a precondition of the redesign rather than a follow up task.
+
+**Accessibility in the field is not office accessibility.** Meeting WCAG AA here meant testing contrast in direct sunlight and in dim plant rooms, and sizing targets for gloved hands. The standard gave us a floor, not an answer. The real work was balancing information density on a small screen against targets big enough to use at arm's length in bad light.
+
+</div>

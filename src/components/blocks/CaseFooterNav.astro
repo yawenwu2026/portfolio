@@ -1,0 +1,104 @@
+---
+// 15. CASE FOOTER NAV — previous/next case study.
+interface NavEntry {
+  href: string;
+  title: string;
+}
+
+interface Props {
+  prevEntry?: NavEntry;
+  nextEntry?: NavEntry;
+}
+
+const { prevEntry, nextEntry } = Astro.props;
+---
+
+<nav class="case-footer-nav" aria-label="Case study navigation">
+  {
+    prevEntry ? (
+      <a class="case-footer-nav__link" href={prevEntry.href}>
+        <span class="case-footer-nav__label">Previous</span>
+        <span class="case-footer-nav__title">{prevEntry.title}</span>
+      </a>
+    ) : (
+      <span class="case-footer-nav__spacer" />
+    )
+  }
+  {
+    nextEntry ? (
+      <a class="case-footer-nav__link case-footer-nav__link--next" href={nextEntry.href}>
+        <span class="case-footer-nav__label">Next</span>
+        <span class="case-footer-nav__title">{nextEntry.title}</span>
+      </a>
+    ) : (
+      <span class="case-footer-nav__spacer" />
+    )
+  }
+</nav>
+
+<style>
+  .case-footer-nav {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .case-footer-nav__link,
+  .case-footer-nav__spacer {
+    flex: 1;
+    padding: var(--space-lg) var(--space-md);
+  }
+
+  .case-footer-nav__link {
+    border-top: 1px solid var(--color-border);
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .case-footer-nav__link--next {
+    text-align: right;
+  }
+
+  .case-footer-nav__label {
+    display: block;
+    margin-bottom: var(--space-xs);
+    color: var(--color-text-muted);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
+  }
+
+  .case-footer-nav__title {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: var(--size-h3);
+    color: var(--color-text);
+    text-decoration-line: underline;
+    text-decoration-color: transparent;
+    transition: text-decoration-color 150ms ease;
+  }
+
+  .case-footer-nav__link:hover .case-footer-nav__title {
+    text-decoration-color: currentColor;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .case-footer-nav__title {
+      transition: none;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .case-footer-nav {
+      flex-direction: row;
+    }
+
+    .case-footer-nav__link {
+      border-top: none;
+      border-left: 1px solid var(--color-border);
+    }
+
+    .case-footer-nav__link:first-child {
+      border-left: none;
+    }
+  }
+</style>

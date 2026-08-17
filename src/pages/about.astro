@@ -1,0 +1,228 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { withBase } from "../lib/site";
+
+const experience = [
+  {
+    role: "Principal UX Designer",
+    company: "Oracle NetSuite",
+    period: "Dec 2023 - May 2026",
+    logo: "/images/shared/logos/oracle-netsuite.png",
+  },
+  {
+    role: "UX/UI Designer",
+    company: "Next Technik",
+    period: "May 2021 - Nov 2023",
+    logo: "/images/shared/logos/next-technik.png",
+  },
+  {
+    role: "Senior UI/UX Designer",
+    company: "Appscore",
+    period: "Jul 2017 - Apr 2021",
+    logo: "/images/shared/logos/appscore.png",
+    sub: [
+      {
+        role: "UX Designer (contract)",
+        company: "carsales",
+        period: "Nov 2019 - May 2020",
+        logo: "/images/shared/logos/carsales.png",
+      },
+      {
+        role: "Senior UX Designer (contract)",
+        company: "NAB",
+        period: "Nov 2017 - Sep 2019",
+        logo: "/images/shared/logos/nab.png",
+      },
+    ],
+  },
+  {
+    role: "Product Design Team Lead",
+    company: "Kingwaytek",
+    period: "Jan 2012 - Oct 2016",
+    logo: "/images/shared/logos/kingwaytek.png",
+  },
+];
+
+const description =
+  "Yawen Wu is a product designer in Melbourne with fifteen years across consumer and enterprise software, now building as well as designing.";
+---
+
+<BaseLayout title="About — Yawen Wu" description={description}>
+  <article class="about">
+    <h1>Yawen Wu</h1>
+    <p class="about__tagline">Product designer, learning to build.</p>
+
+    <div class="about__bio">
+      <p>
+        I've spent about 15 years designing software. Some of it for consumers: car navigation app for
+        drivers, a tram app for commuters. Some of it for businesses: digital banking, a car marketplace, and
+        field service tools used by technicians across three countries.
+      </p>
+      <p>
+        People talk about B2C and B2B like they're two different jobs. I don't think they are. Either way,
+        someone's trying to get something done and it's harder than it should be. Working out why, and then
+        making it easier, is the bit I love. It doesn't matter much to me whether that person is waiting for
+        a tram or standing in a plant room with a customer watching. Same question.
+      </p>
+      <p>
+        Things are shifting pretty quickly in this industry. The gap between designers and engineers keeps
+        getting smaller, and the tools are good enough now that a designer can take an idea further than a
+        prototype. I'd rather have a go at that than sit and watch, so I've been teaching myself to build.
+      </p>
+      <p>
+        This site is me practising. I designed it and built it with Claude Code, and I'm still tinkering, so
+        it'll probably look a bit different next time you drop by. That's the point. It's easier to talk
+        about shipping early and learning as you go when you're actually doing it.
+      </p>
+    </div>
+
+    <section class="about__section">
+      <h2>Recent Experience</h2>
+      <ul class="about__experience">
+        {
+          experience.map((job) => (
+            <>
+              <li class="about__experience-row">
+                <div class="about__experience-lead">
+                  <img class="about__logo" src={withBase(job.logo)} alt="" loading="lazy" />
+                  <div>
+                    <p class="about__role">{job.role}</p>
+                    <p class="about__company">{job.company}</p>
+                  </div>
+                </div>
+                <p class="about__period">{job.period}</p>
+              </li>
+              {job.sub?.map((sub) => (
+                <li class="about__experience-row about__experience-row--sub">
+                  <div class="about__experience-lead">
+                    <img class="about__logo" src={withBase(sub.logo)} alt="" loading="lazy" />
+                    <div>
+                      <p class="about__role">{sub.role}</p>
+                      <p class="about__company">{sub.company}</p>
+                    </div>
+                  </div>
+                  <p class="about__period">{sub.period}</p>
+                </li>
+              ))}
+            </>
+          ))
+        }
+      </ul>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .about {
+    max-width: min(var(--width-prose), 100% - 2 * var(--space-gutter));
+    margin-inline: auto;
+    padding-block: var(--space-section);
+  }
+
+  .about h1 {
+    margin: 0;
+  }
+
+  .about__tagline {
+    margin: var(--space-xs) 0 var(--space-lg);
+    color: var(--color-text-muted);
+    font-size: var(--size-h3);
+  }
+
+  .about__bio p {
+    margin: 0;
+    /* 1rem (16px), not a token: the WCAG floor from the project brief
+       ("body text never below 16px on any device") is a hard limit, not
+       a design-scale value — --size-sm (15px) would read smaller but
+       breaks that rule, so this stays exactly at the floor. */
+    font-size: 1rem;
+  }
+
+  .about__bio p + p {
+    margin-top: var(--space-md);
+  }
+
+  .about__section {
+    margin-top: var(--space-xl);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .about__section h2 {
+    margin: 0 0 var(--space-md);
+  }
+
+  .about__experience {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .about__experience-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-xs) var(--space-md);
+    padding-block: var(--space-sm);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .about__experience-row:first-child {
+    border-top: none;
+  }
+
+  .about__experience-lead {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .about__logo {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    object-fit: contain;
+  }
+
+  /* Contract stints nested under the employer they ran alongside
+     (carsales and NAB both fell within the Appscore years) — indented
+     and quieter than a primary row, no border of its own so it reads
+     as part of the row above rather than a new entry. */
+  .about__experience-row--sub {
+    padding-left: var(--space-md);
+    border-top: none;
+  }
+
+  .about__experience-row--sub .about__logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+  }
+
+  .about__experience-row--sub .about__role {
+    font-weight: var(--weight-body);
+    font-size: var(--size-sm);
+  }
+
+  .about__role {
+    margin: 0;
+    font-weight: var(--weight-heading);
+  }
+
+  .about__company {
+    margin: var(--space-xs) 0 0;
+    color: var(--color-text-muted);
+    font-size: var(--size-sm);
+  }
+
+  .about__period {
+    margin: 0;
+    color: var(--color-text-muted);
+    font-size: var(--size-sm);
+    white-space: nowrap;
+  }
+
+</style>

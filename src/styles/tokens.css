@@ -1,0 +1,141 @@
+/* ============================================================
+   Design tokens
+   Palette sampled directly from Yawen's 2026 portfolio PDF.
+   Base ground #F2EDE6, brand blue #4D70B8, accent #F5BD33.
+   Type is still undecided. See the TYPOGRAPHY block below.
+   ============================================================ */
+
+:root {
+  /* ---- Ground ------------------------------------------------
+     --color-bg is the warm off-white carried over from the PDF.
+     --color-surface is one step deeper, for cards and callouts.
+     --color-surface-alt is the near-white used on the PDF's
+     content-heavy slides, for sections that need to feel lighter. */
+  --color-bg: #F2EDE6;
+  --color-surface: #E9E2D8;
+  --color-surface-alt: #FAF8F4;
+  --color-inverse-bg: #1C1F23;
+
+  /* ---- Text --------------------------------------------------
+     Not pure black. #1C1F23 is the dark tone already present in
+     the PDF and sits more comfortably on a warm ground. */
+  --color-text: #1C1F23;
+  --color-text-muted: #6B675F;
+  --color-text-inverse: #F2EDE6;
+  /* Muted text on --color-inverse-bg (the dark hero, the CTA band).
+     ~7.2:1 against #1C1F23 — comfortably clears 4.5:1 even at small
+     sizes, unlike a plain opacity reduction which would be unpredictable. */
+  --color-text-inverse-muted: #9C978A;
+
+  /* ---- Brand -------------------------------------------------
+     Blue is the PDF's heading and link colour.
+     --color-accent-deep is a darkened variant for small text and
+     links, because #4D70B8 alone does not clear 4.5:1 at body size. */
+  --color-brand: #4D70B8;
+  --color-brand-deep: #3A5896;
+  --color-brand-soft: #DCE3F2;
+
+  /* ---- Accent ------------------------------------------------
+     The yellow marker rules from the PDF's opening slide.
+     Decorative only. Never use for text or as a sole indicator. */
+  --color-accent: #F5BD33;
+
+  /* ---- Structure --------------------------------------------- */
+  --color-border: #DDD5C9;
+  --color-border-strong: #C4BAAB;
+
+  /* ---- TYPOGRAPHY ----------------------------------------------
+     Work Sans, self-hosted via @fontsource-variable/work-sans, one
+     family for heading and body — replaces the Nunito launch-day
+     placeholder (see tokens.css history for that pairing, and the
+     Fraunces/Inter one before it). Chosen to sit closer to a text
+     face than a UI face, quieter than Nunito's rounded terminals.
+     --font-accent is Sacramento, self-hosted via @fontsource/sacramento:
+     a genuine script, not a casual handwriting face, so use it sparingly
+     — a name, a short tagline, a signature — never a full paragraph. */
+  --font-body: "Work Sans Variable", system-ui, -apple-system, sans-serif;
+  --font-heading: "Work Sans Variable", system-ui, -apple-system, sans-serif;
+  --font-accent: "Sacramento", cursive;
+  --size-body: 1.0625rem;
+  --size-sm: 0.9375rem;
+  --size-xs: 0.875rem;
+  /* Between --size-body and --size-h3. Emphasised reading text: pull
+     quotes, page-hero supporting paragraphs. Not a heading size. */
+  --size-lg: 1.375rem;
+  --size-h1: 2.75rem;
+  /* Fluid H1 for the home hero. Sized for the self-intro paragraph
+     (two sentences, ~230 characters) rather than a short punchy
+     headline — a typical display clamp() would be far too large to
+     read comfortably at that length. */
+  --size-h1-fluid: clamp(1.5rem, 1.1rem + 1.6vw, 2.25rem);
+  /* Fluid H2, same reasoning as H1: clamp so it doesn't dominate at
+     375px. Ceiling matches the old fixed value (1.875rem) exactly. */
+  --size-h2: clamp(1.375rem, 1.1rem + 1.2vw, 1.875rem);
+  --size-h3: 1.375rem;
+  --leading-body: 1.5;
+  --leading-heading: 1.15;
+  --weight-body: 400;
+  --weight-heading: 300;
+  /* The one deliberate exception to --weight-heading: card titles in
+     a grid (home page selected-work, card-grid block) read as a list
+     of items to scan, not a single display headline, so they carry
+     more weight than the light heading default. */
+  --weight-semibold: 600;
+  --tracking-body: -0.03em;
+  --tracking-heading: -0.03em;
+  --tracking-caps: 0.08em;
+
+  /* ---- Space -------------------------------------------------- */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 4rem;
+  --space-xl: 8rem;
+  /* Vertical rhythm for a full page-level section (page hero, CTA band,
+     the gap between major sections on home and in a case study). Fluid
+     so section spacing scales with viewport instead of jumping at a
+     breakpoint. */
+  --space-section: clamp(3rem, 8vw, 8rem);
+  /* Global horizontal gutter — the minimum breathing room between page
+     content and the viewport edge at any width. */
+  --space-gutter: clamp(1rem, 4vw, 2rem);
+
+  /* ---- Layout ------------------------------------------------- */
+  --width-prose: 720px;
+  --width-media: 1200px;
+  --radius: 0;
+  /* The one deliberate exception to "no rounding anywhere on this
+     site": buttons are fully pill-shaped. 999px rather than 50% so it
+     stays a full pill regardless of the button's own height. */
+  --radius-pill: 999px;
+
+  /* ---- Breakpoints ----------------------------------------------
+     Reference only — custom properties don't work inside @media
+     conditions, so every responsive rule repeats these two raw
+     values (768px, 1024px) rather than reading them from here. */
+
+  /* ---- Aspect ratios ------------------------------------------ */
+  --ratio-wide: 16 / 9;
+  --ratio-standard: 4 / 3;
+  --ratio-tall: 3 / 4;
+  --ratio-square: 1 / 1;
+}
+
+/* ============================================================
+   Contrast reference against --color-bg #F2EDE6
+
+   #1C1F23  text            14.20:1  AAA, body text
+   #6B675F  muted            4.83:1  AA, captions and metadata
+   #3A5896  brand-deep       5.98:1  AA, links and small brand text
+   #4D70B8  brand            4.17:1  large text only, 24px+ or 19px bold
+   #F5BD33  accent           1.48:1  decorative only, never text
+   #DDD5C9  border           1.25:1  non-essential separators only
+
+   Inverse sections on #1C1F23:
+   #F2EDE6  text on inverse         14.20:1  AAA
+   #9C978A  muted text on inverse    7.20:1  AA, small text okay
+   #4D70B8  brand on inverse         3.41:1  large text only
+
+   Rule: if a colour is used for body-size text, it must be
+   brand-deep or darker. Reserve #4D70B8 for headings.
+   ============================================================ */
