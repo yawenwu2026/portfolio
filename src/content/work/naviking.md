@@ -19,11 +19,11 @@ tags: ["Navigation", "Automotive", "Team Leadership", "Cross-border Collaboratio
 
 ## Context
 
-Kingwaytek owned NaviKing, a very popular car navigation app in Taiwan. With revenue declining from 2011, our vice president wanted a next generation product built on brand new 3D maps technology from a Korean supplier.
+Kingwaytek owned NaviKing, a very popular car navigation app in Taiwan. With revenue declining from 2011, our vice president demanded a next generation product built on brand new 3D maps technology from a Korean supplier.
 
-To differentiate from our existing product we had to address its shortcomings, define a desirable role for the app, and meet drivers' actual needs, while building entirely new search and map experiences with a supplier based in another country.
+To differentiate the new app, our team needed to address existing shortcomings, define a desirable role for the product, and make sure it met drivers' actual needs, while collaborating with a Korean 3D maps engine supplier to build entirely new search and map experiences from scratch.
 
-The pressure was intense: our vice president set an aggressive deadline, launch in July 2013. In reality the project took 19 months and shipped in July 2014.
+The pressure was intense. Our VP set an aggressive deadline: launch in July 2013. In reality, the project took 19 months, shipping in July 2014, as we worked through building a completely new navigation experience on untested 3D mapping technology.
 
 </div>
 
@@ -171,13 +171,13 @@ The engine rendered 3D objects matching what drivers actually saw through the wi
 
 ## Outcome
 
-NaviKing 3D released on 27 July 2014, and the team didn't believe it was ready.
+After 19 months of development, NaviKing 3D released on 27 July 2014, even though our team didn't feel the product was mature enough to launch. VP-driven deadline pressure forced us to ship with known issues in the 3D rendering.
 
-The deadline pressure meant shipping with known problems: 3D rendering was slow on older devices, buildings distorted at certain angles, and battery consumption ran significantly higher than our previous 2D product. Our store rating settled at 3.2 stars, and the reviews were accurate about why. It was a real trade off between market timing and product maturity, and I don't think we got it right.
+Initial reviews reflected that: 3D rendering was slow on older devices, buildings looked distorted at certain angles, and battery consumption was significantly higher than our previous 2D product.
 
-What happened next is the part I'm prouder of. Rather than defending the decisions, we treated the reviews as the roadmap: we prioritised the most frequently mentioned problems, worked with the Korean supplier to optimise rendering performance, added a straightforward toggle between 2D and 3D so people on older devices could opt out, and cut battery consumption substantially.
+Rather than defend our decisions, we listened. User reviews became our product roadmap: we prioritised the most mentioned pain points, worked with our Korean supplier to optimise 3D rendering performance, added an easy 2D/3D toggle, and cut battery consumption. Six months of focused iteration paid off: users who'd complained about performance began praising how 3D landmarks helped them navigate complex highway interchanges, exactly the feature we'd envisioned from the start.
 
-Six months of focused iteration took the rating from 3.2 to 4.1. Users who had complained about performance began praising how the 3D landmarks helped them navigate complex highway interchanges, precisely the value we had envisioned at the start. The idea had been right the whole time. The execution had not been ready to demonstrate it.
+**3.2★ → 4.1★.** App store rating, launch to six months post-launch iteration.
 
 </div>
 

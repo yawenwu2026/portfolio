@@ -19,11 +19,9 @@ tags: ["Transit", "Mobile", "Information Architecture", "Personal Project"]
 
 ## Context
 
-This is a self-directed project, not client work. I've labelled it clearly because how a designer spends unpaid time says something, and because the constraint here was genuinely different from anything I met at work.
+tramTRACKER was one of Melbourne's most popular public transport apps, serving thousands of daily commuters who rely on it to catch trams across the city. As a frequent user myself, I encountered several usability issues that frustrated my daily commute.
 
-tramTRACKER was one of Melbourne's most popular public transport apps, serving thousands of daily commuters who rely on it to catch trams across the city. I was one of them, and I ran into the same usability issues that frustrated everyone else.
-
-Redesigning something people already use every day is a different problem to designing something new. Any change I made would break a habit someone had built over years. The goal couldn't be "make it better", it had to be "make it better without making it unfamiliar".
+Redesigning such a widely used app presented a unique challenge: any changes needed to preserve the features users already loved while addressing the pain points. The app had a loyal user base who knew exactly where everything was. My challenge was to improve the experience without disrupting their established mental models and daily habits.
 
 </div>
 
@@ -33,51 +31,39 @@ Redesigning something people already use every day is a different problem to des
 
 I started from evidence rather than my own irritation, because as a daily user I couldn't trust my instincts about what was actually broken versus what was merely different from my preference.
 
-### What the store reviews said
+### Store reviews and street interviews
 
-I collected and coded reviews from Google Play and the App Store. What users loved was narrow and specific: "Especially like the notification feature." The complaints clustered.
+I collected reviews from Google Play and the App Store, then interviewed six people on the street, five waiting for trams and one riding one, to learn daily usage patterns and what information people valued most. Three distinct user types emerged, each with different needs.
 
-Tutorial messages kept interrupting people, with many noting "Annoying tips!" and being "forced through a tutorial."
+"A list of stop names is stupid. I don't know the tram network, I don't know which suburb is after which." (App Store review)
 
-The list-based stop interface didn't match how people think about a city. One review put it better than any research summary could: "A list of stop names is stupid. I don't know the tram network... I have no idea what the stop names are and which stop is near where I want to go."
+"What we need is a map. You tap on the map where you want to go and it suggests a route and when you need to leave." (App Store review)
 
-Features didn't do what they promised. The tram alarm was "extremely unreliable and hardly ever accurate," and every upgrade reset user settings, punishing the most loyal users hardest.
+"Especially like the notification feature." (App Store review)
 
-And there was a clear unmet need: "What we need is a map. You tap on the map where you want to go and it suggests a route and when you need to leave." The app couldn't do that at all.
-
-### What street interviews added
-
-I interviewed six people on the street: five waiting for trams, one riding a tram while using the app. Short, contextual, in the moment.
+"[The tram alarm is] extremely unreliable and hardly ever accurate," and every upgrade reset user settings. (App Store review)
 
 <div class="figure-row">
 
-The conversations revealed three distinct user types, each with different needs. One structure was serving all three, and suiting none of them.
+Mapping the existing page flow to see how users navigated the app and where friction lived.
 
 ![Photographs of street interviews with tram riders](/images/tramtracker/tram-09-street-interviews.png)
 *Interviewing at the stop rather than in a room. People described what they were doing rather than what they remembered doing.*
 
 </div>
 
-### The structural diagnosis
+### Defining the problems
 
 I mapped the existing page flow to understand what was where and why.
 
 ![Page flow diagram of the existing tramTRACKER app](/images/tramtracker/tram-01-current-flow.png)
 *The existing structure. Note the size of the "More" branch on the right, which is where anything that did not fit elsewhere had accumulated.*
 
-Section by section:
+**Nearby and Favourites.** A long list of stop names didn't help users find their tram, most switched to map mode instead. "Add to favourite" was hidden in a menu, and managing favourite groups wasn't easy to understand.
 
-**Nearby** listed stop names, which doesn't help you find a tram unless you already know the network. I always switched to map mode myself.
+**Routes and myTram.** Choosing a tram line showed only a stop list, not real-time info. myTram asked users to enter a vehicle number to check arrival time, a strange, unintuitive ask.
 
-**Favourites** hid the "add to favourite" button inside a menu, and managing favourite groups and stops wasn't easy to understand.
-
-**Routes** broke an expectation. Choosing a tram line looked like it would show real-time info, but it only listed the line's stops. Choosing a stop didn't show real-time info either.
-
-**myTram** asked people to enter a tram vehicle number to get arrival times, which assumes the tram is already in front of you.
-
-**More** was a dumping ground for functions with no organisation.
-
-Two smaller problems too: the main menu button sat close enough to the advertisement banner that people tapped the ad by accident, and the app volunteered information most people didn't need, like tram vehicle style and air conditioning.
+**More, and miscellaneous friction.** Functions were scattered with no clear organisation. The mandatory tutorial annoyed users, the main menu sat too close to the ad banner (leading to accidental taps), and the app surfaced information, like tram vehicle style and A/C, that users didn't actually need.
 
 </div>
 
@@ -89,54 +75,50 @@ Two smaller problems too: the main menu button sat close enough to the advertise
 
 Rather than a single composite user, the interviews supported three distinct types.
 
-**Frank**, 34, a software salesperson. Drives his daughter to school then takes trams to visit clients around the CBD to avoid the parking hassle. He knows the network well and needs an accurate wait time, since his professional reputation depends on arriving when he said he would. His complaint: the estimate is sometimes wrong.
+**Frank**, 34, a software salesperson. Drives his daughter to school, then visits clients across the CBD by tram to avoid parking. Familiar with the tram network. Needs accurate, reliable wait times, since his professional image depends on being on time.
 
-**Joseph**, 23, a waiter working shifts across the week. Lives near a tram stop and takes trams everywhere, but doesn't know the network and doesn't want to learn it. He needs the app to just tell him how to get from home to a bar. Today he opens Google Maps instead, because tramTRACKER can't answer that question.
+**Joseph**, 23, a waiter. Works rotating shifts at a café. His apartment is close to a tram stop, so he takes trams everywhere on his days off. Needs a simple way to find the route from home to wherever he's headed.
 
 <div class="figure-row">
 
-**Mei**, 28, visiting from overseas. She has no idea about the tram network, the stop names, or the suburb names. She wants to see Melbourne's well known places within limited time and budget. Nothing in the app was designed for someone in her position.
+**Mei**, 28, a boutique assistant visiting from China. Uses Google Maps to get around when travelling overseas, and is comfortable with the main points of a conversation in English. Needs easy, immediate access to Melbourne's sights within limited time and budget.
 
 ![Three persona cards: Frank, Joseph and Mei](/images/tramtracker/tram-02-personas.png)
 *Three riders with incompatible needs. The old structure served the expert case and left the other two to Google Maps.*
 
 </div>
 
-Side by side, the redesign brief became obvious. The app was built for Frank. Joseph and Mei were leaving.
-
 ### Competitive analysis
 
-I compared tramTRACKER against PTV, Transit and Commutr across downloads, ratings and feature coverage.
+I analysed PTV, Transit and Commutr against tramTRACKER.
 
 ![Competitive analysis table comparing four transit apps](/images/tramtracker/tram-03-competitive-analysis.png)
 *Feature comparison across the four apps. The gaps were as informative as the overlaps.*
 
-Transit had the highest rating, 4.2 from 32,897 reviews, and the broadest search: contacts, addresses, stops, stations and places. PTV offered trip planning, which tramTRACKER lacked entirely.
+Transit had the highest rating (4.2, 32,897 ratings) with comprehensive search. PTV offered trip planning that tramTRACKER lacked. But tramTRACKER was the only app with both list and map favourites, and the most detailed stop information. The analysis pointed to one conclusion: strong information depth, but weak navigation structure and no trip planning.
 
-But tramTRACKER wasn't weak everywhere. It was the only app offering both list and map modes for favourites, and it carried the most detailed stop information: tram type, air conditioning, and nearby points of interest.
+### Four main features
 
-The conclusion shaped the whole redesign. tramTRACKER didn't have an information problem, it had a navigation and planning problem. The depth was already there and worth protecting. What was missing was a way in for people who didn't already know the network.
+Based on store reviews, user stories and the competitive analysis, I redesigned the flow around four features.
 
-### Restructuring around four features
+**Nearby** shows nearby routes to help users find the tram line, closest stop and, most importantly, the waiting time. Addresses commuters like Frank who need quick, accurate information.
 
-I rebuilt the information architecture around four entry points, mapped deliberately to the three personas.
+**Favourites** keeps the existing data structure but reworks the interface to make managing personal content easier, preserving what existing users love while improving usability.
 
-**Nearby** shows nearby routes rather than a list of stop names, so you get the tram line, the closest stop, and the waiting time. This is Frank's case, made faster.
+**A to B** provides directions for transit or walking, searchable by place, address or map point, with saved home and work locations, directly addressing Joseph's need for route planning.
 
-**Favourites** keeps the existing data structure but changes the interface for managing personal content. Keeping the data model intact was deliberate: existing users had already invested in their favourites, and I didn't want to make them rebuild.
-
-**A to B** lets people search a place, an address, or drop a map point for start and destination, with home and work saved as personal locations. This is Joseph's need for route planning, and the feature the reviews had been asking for.
-
-**Discover** shows nearby sights in map and list view, with keyword search and one-tap transit directions. This is Mei.
+**Discover** shows nearby sightseeing in map and list views, searchable by keyword with one click transit directions, built for users like Mei who don't know Melbourne yet.
 
 ![Information architecture diagram showing the four main sections](/images/tramtracker/tram-04-information-architecture.png)
 *Four entry points instead of five sections plus an overflow menu. Everything that had accumulated in "More" was either given a home or removed.*
+
+The launch page gives immediate access to all four features, balancing regular commuters who want familiar stops fast, occasional users planning routes, and tourists who need discovery.
 
 ### Testing on paper first
 
 <div class="figure-row">
 
-I drew the main pages by hand and tested them before moving to anything higher fidelity. Four people worked through the flow and found the functions easy to understand and the information clear.
+Main pages were sketched on paper and tested to check whether the new flow made sense. 4 out of 4 users found the functions easy to understand and the information clear.
 
 ![Paper prototypes and photographs of paper testing sessions](/images/tramtracker/tram-05-lofi-prototypes.png)
 *Paper testing costs an afternoon and catches structural problems that are expensive to fix once anything is drawn properly.*
@@ -145,7 +127,7 @@ I drew the main pages by hand and tested them before moving to anything higher f
 
 <div class="figure-row">
 
-Then mid-fidelity wireframes in Axure to work through interaction detail.
+Mid-fidelity wireframes built in Axure RP to work through interaction details ahead of stakeholder feedback.
 
 ![Mid-fidelity wireframes of the four main screens](/images/tramtracker/tram-06-wireframes.png)
 *Wireframes for Nearby, Favourites, A to B and Discover.*
@@ -156,16 +138,16 @@ Then mid-fidelity wireframes in Axure to work through interaction detail.
 
 <div class="figure-row">
 
-I built an interactive prototype in inVision and ran usability tests with four people.
+An interactive InVision prototype was tested with four people to validate the design decisions.
 
 ![Photograph of a usability testing session](/images/tramtracker/tram-07-usability-testing.png)
 *Testing the interactive prototype.*
 
 </div>
 
-The most useful comment: "The 'A to B' is easy because it looks like Google Maps." That was the intention, not a shortcut. Borrowing an established pattern for a genuinely new feature kept the learning cost close to zero, which mattered given the whole constraint of this project was not disturbing existing habits.
+"The 'A to B' is easy because it looks like Google Maps." The familiar patterns borrowed from Google Maps reduced the learning curve while keeping tramTRACKER-specific features front and centre.
 
-People also responded strongly to the map of nearby attractions: "I love the map which shows nearby attractions." It was the one feature with no equivalent in any competitor.
+"I love the map which shows nearby attractions." It was the one feature with no equivalent in any competitor.
 
 </div>
 
@@ -175,26 +157,12 @@ People also responded strongly to the map of nearby attractions: "I love the map
 
 <div class="figure-row">
 
-The final high-fidelity design was built in Sketch, applying a clean, modern visual language while keeping what existing users would recognise: the green identity, the numeric route badges, the minute countdown.
+Final mockups built in Sketch, applying a clean, modern visual language while keeping recognisable elements from the original app: the green identity, the numeric route badges, the minute countdown.
 
 ![High fidelity designs showing Nearby, A to B and route detail screens](/images/tramtracker/tram-08-hifi-design.png)
 *Route number and wait time remain the largest elements on screen, because that is what people open the app for.*
 
 </div>
-
-The structural change shows in what didn't change. The route badge, the countdown and the green identity are all still there. The navigation underneath them is completely different.
-
-</div>
-
-<div class="section-tint">
-
-## Outcome
-
-This was a personal project, so there's no launch, no analytics, and no adoption figure. I want to be plain about that rather than imply otherwise.
-
-What it produced was a validated structure: four participants completed key tasks in the new flow, including the trip planning task the original app couldn't support at all, and the familiar patterns kept the learning curve low.
-
-What it produced for me was more durable. This was the project where I learned to separate "this is badly designed" from "this is not how I would have done it", a distinction I've needed in every redesign since.
 
 </div>
 
