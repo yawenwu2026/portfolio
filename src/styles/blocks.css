@@ -495,25 +495,12 @@ h3 + * {
   margin-inline: auto;
 }
 
-/* Overrides .figure's own width-media / width-prose cap (see block 1).
-   Now that figure-row is always a stacked single column, letting the
-   image run out to the row's full width-media cap (1200px) made
-   portrait screenshots balloon to poster size. 560px keeps it close
-   to the width it held back when this was a two-column grid, higher
-   specificity than the attribute-only selectors in block 1 wins
-   without !important. */
+/* Overrides .figure's own width-media / width-prose cap (see block 1)
+   so the image fills the row's own width-prose track (720px) instead
+   of the wider 1200px cap block 1 sets for a standalone full-bleed
+   figure — higher specificity than the attribute-only selectors in
+   block 1 wins without !important. */
 .figure-row .figure[data-full-bleed] {
-  max-width: min(560px, 100%);
-  margin-inline: auto;
-}
-
-/* Opt-in modifier: <div class="figure-row figure-row--wide"> for a
-   figure with enough detail (a multi-variant comparison, a design
-   system sheet) that the standard 560px cap makes it hard to read.
-   Fills the row's own width-prose track (720px) rather than the
-   560px default — still capped to the row, not bled wider, so the
-   row's own alignment with the rest of the section stays intact. */
-.figure-row--wide .figure[data-full-bleed] {
   max-width: 100%;
   margin-inline: 0;
 }
