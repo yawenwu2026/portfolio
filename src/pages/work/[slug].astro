@@ -32,8 +32,22 @@ const { Content } = await render(entry);
   coverImage={entry.data.coverImage}
   coverAlt={entry.data.coverAlt}
   summary={entry.data.summary}
-  prevEntry={prevEntry && { slug: prevEntry.id, title: prevEntry.data.title }}
-  nextEntry={nextEntry && { slug: nextEntry.id, title: nextEntry.data.title }}
+  prevEntry={
+    prevEntry && {
+      slug: prevEntry.id,
+      title: prevEntry.data.title,
+      image: prevEntry.data.thumbImage ?? prevEntry.data.coverImage,
+      imageAlt: prevEntry.data.coverAlt,
+    }
+  }
+  nextEntry={
+    nextEntry && {
+      slug: nextEntry.id,
+      title: nextEntry.data.title,
+      image: nextEntry.data.thumbImage ?? nextEntry.data.coverImage,
+      imageAlt: nextEntry.data.coverAlt,
+    }
+  }
 >
   <Content />
 </CaseStudy>

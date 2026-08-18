@@ -5,6 +5,8 @@ import { withBase } from "../lib/site";
 interface NavEntry {
   slug: string;
   title: string;
+  image: string;
+  imageAlt: string;
 }
 
 interface Props {
@@ -87,12 +89,14 @@ const {
       <nav class="case-study-nav" aria-label="Case study navigation">
         {prevEntry && (
           <a class="case-study-nav__link" href={withBase(`/work/${prevEntry.slug}`)}>
-            &larr; {prevEntry.title}
+            <img class="case-study-nav__image" src={withBase(prevEntry.image)} alt={prevEntry.imageAlt} loading="lazy" />
+            <span class="case-study-nav__title">&larr; {prevEntry.title}</span>
           </a>
         )}
         {nextEntry && (
           <a class="case-study-nav__link case-study-nav__link--next" href={withBase(`/work/${nextEntry.slug}`)}>
-            {nextEntry.title} &rarr;
+            <img class="case-study-nav__image" src={withBase(nextEntry.image)} alt={nextEntry.imageAlt} loading="lazy" />
+            <span class="case-study-nav__title">{nextEntry.title} &rarr;</span>
           </a>
         )}
       </nav>
@@ -227,26 +231,72 @@ const {
   }
 
   .case-study-nav {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: var(--space-sm);
-    margin-bottom: var(--space-md);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+    margin-bottom: var(--space-lg);
   }
 
-  .case-study-nav__link,
+  .case-study-nav__link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .case-study-nav__image {
+    display: block;
+    width: 100%;
+    aspect-ratio: var(--ratio-standard);
+    object-fit: cover;
+    transition: transform 200ms ease;
+  }
+
+  .case-study-nav__link:hover .case-study-nav__image {
+    transform: scale(1.02);
+  }
+
+  .case-study-nav__title {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    min-height: 2.75rem;
+    font-family: var(--font-heading);
+    font-size: var(--size-h3);
+    text-decoration-line: underline;
+    text-decoration-color: transparent;
+    transition: text-decoration-color 150ms ease;
+  }
+
+  .case-study-nav__link:hover .case-study-nav__title {
+    text-decoration-color: currentColor;
+  }
+
   .case-study-home-link {
     display: inline-flex;
     align-items: center;
     min-width: 2.75rem;
     min-height: 2.75rem;
-  }
-
-  .case-study-nav__link--next {
-    margin-left: auto;
-  }
-
-  .case-study-home-link {
     color: var(--color-text-muted);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .case-study-nav__image,
+    .case-study-nav__title {
+      transition: none;
+    }
+  }
+
+  @media (min-width: 640px) {
+    .case-study-nav {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .case-study-nav__link--next {
+      grid-column: 2;
+      align-items: flex-end;
+      text-align: right;
+    }
   }
 </style>
