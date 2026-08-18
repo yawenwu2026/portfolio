@@ -55,12 +55,12 @@
      placeholder (see tokens.css history for that pairing, and the
      Fraunces/Inter one before it). Chosen to sit closer to a text
      face than a UI face, quieter than Nunito's rounded terminals.
-     --font-accent is Sacramento, self-hosted via @fontsource/sacramento:
-     a genuine script, not a casual handwriting face, so use it sparingly
+     --font-accent is Caveat, self-hosted via @fontsource/caveat: a
+     genuine script, not a casual handwriting face, so use it sparingly
      — a name, a short tagline, a signature — never a full paragraph. */
   --font-body: "Work Sans Variable", system-ui, -apple-system, sans-serif;
   --font-heading: "Work Sans Variable", system-ui, -apple-system, sans-serif;
-  --font-accent: "Sacramento", cursive;
+  --font-accent: "Caveat", cursive;
   --size-body: 1.0625rem;
   --size-sm: 0.9375rem;
   --size-xs: 0.875rem;

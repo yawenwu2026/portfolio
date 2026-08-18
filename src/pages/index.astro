@@ -8,15 +8,14 @@ const entries = await getCollection("work");
 const sorted = [...entries].sort((a, b) => a.data.order - b.data.order);
 
 const description =
-  "Fifteen years across field service, transit, and navigation. I design for people wearing gloves, standing in the rain, with one bar of signal.";
+  "Senior product designer in Melbourne. Fifteen years turning unclear problems into concepts a team can build, across enterprise SaaS, financial services and consumer mobility.";
 ---
 
 <BaseLayout title="Yawen Wu — Senior Product Designer" description={description}>
   <PageHero eyebrow="Hello, I'm Yawen" photo="/images/shared/yawen-photo.png" photoAlt="Yawen Wu">
     <Fragment slot="heading">
-      A Senior Product Designer based in Melbourne, 15+ years translating between user needs and business
-      goals across enterprise <em>SaaS</em>, <em>financial services</em>, <em>commerce</em> and{" "}
-      <em>digital maps</em>.
+      Fifteen years turning unclear problems into <em>concepts a team can build</em>. Usually the hard
+      part is agreeing what the problem is.
     </Fragment>
   </PageHero>
 

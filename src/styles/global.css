@@ -162,6 +162,19 @@ small {
   font-weight: var(--weight-semibold);
 }
 
+/* Opening line of a case study body: a single display-scale statement
+   in --font-accent (Sacramento), the same sparing "short tagline, never
+   a full paragraph" use the token is documented for in tokens.css.
+   Script faces read smaller than a sans at the same size, hence the
+   larger clamp ceiling than .case-study-body h2 uses. */
+.case-study-lead {
+  margin-bottom: var(--space-md);
+  color: var(--color-accent-deep);
+  font-family: var(--font-accent);
+  font-size: clamp(2.25rem, 1.5rem + 3.5vw, 4rem);
+  line-height: 1.2;
+}
+
 /* Full-width block classes (figures, diagrams, stat rows, etc.) manage
    their own max-width in blocks.css and are excluded so this rule
    doesn't fight them. */
