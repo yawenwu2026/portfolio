@@ -154,6 +154,14 @@ small {
   font-size: clamp(1.75rem, 1.3rem + 2vw, 2.5rem);
 }
 
+/* Subsection titles ("Global navigation", "Task summary card"...) read
+   as light-weight body text at h3's default --weight-heading (300),
+   easy to skim past. Bold makes them proper scan anchors within a
+   section, matching the case-study-wide push toward scannability. */
+.case-study-body h3 {
+  font-weight: var(--weight-semibold);
+}
+
 /* Full-width block classes (figures, diagrams, stat rows, etc.) manage
    their own max-width in blocks.css and are excluded so this rule
    doesn't fight them. */
