@@ -8,7 +8,7 @@ platform: "Android and iOS"
 timeline: "Oct 2012 - Jul 2014"
 order: 3
 isPersonalProject: false
-coverImage: "/images/naviking/navi-cover.png"
+coverImage: "/images/naviking/navi-thumb.jpg"
 coverAlt: "NaviKing 3D navigation view showing a 3D city model with route guidance"
 thumbImage: "/images/naviking/navi-thumb.jpg"
 coverPosition: "50% 50%"
@@ -186,12 +186,6 @@ Rather than defend our decisions, we listened. User reviews became our product r
 ## Reflection
 
 **A deadline is a design constraint, and it should be treated as one.** We accepted July as fixed and negotiated everything else around it. In hindsight the more useful conversation would have been about what we could credibly ship by July, rather than compressing the full scope into the available time and hoping.
-
-**Analytics before launch changed what happened after it.** Setting up tracking beforehand meant that when the criticism arrived we could tell which complaints reflected widespread behaviour and which were vocal minorities. That is what made six months of iteration efficient rather than reactive. It is the reason I now treat instrumentation as a precondition rather than a follow up task.
-
-**Specifications carry weight across distance.** Working with a supplier in another country taught me that a requirement has to travel with its reasoning attached. When someone cannot ask you a quick question, ambiguity does not surface as a question. It surfaces as a built feature that does the wrong thing.
-
-**Leading a team is mostly translation.** Between the vice president's deadline and the R&D team's feature ambitions, between user needs and API constraints, between our expectations and the supplier's. The design deliverables mattered, but the work that actually moved the project was making those groups legible to each other.
 
 **A bad launch is recoverable. A defensive response to one is not.** The rating recovery came from taking the criticism literally. That instinct, treating negative feedback as the most efficient research available, is the single most useful habit I took from this project.
 

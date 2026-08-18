@@ -174,8 +174,4 @@ Final mockups built in Sketch, applying a clean, modern visual language while ke
 
 **Personas earn their keep when they disagree.** Creating personas for Frank, Joseph and Mei showed me a single interface needed to serve multiple use cases. The four-feature structure came from recognising these different needs, not from trying to force everyone into one workflow.
 
-**Borrowed patterns are a legitimate tool.** Making A to B look like Google Maps wasn't a lack of originality, it was spending the user's learning budget on what was actually new rather than the interface around it. I used the same reasoning years later deciding how much of the field service app's structure to preserve.
-
-**Why this sits alongside commercial work.** The constraint here, improving something without disrupting established mental models, is exactly the constraint I met again at Next Technik, where technicians had years of muscle memory in an app they disliked. The reasoning transferred directly.
-
 </div>
