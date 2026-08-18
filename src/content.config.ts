@@ -17,6 +17,7 @@ const work = defineCollection({
     coverAlt: z.string(),
     thumbImage: z.string().optional(),
     coverPosition: z.string().optional(),
+    heroPosition: z.string().optional(),
     summary: z.string(),
     tags: z.array(z.string()).optional(),
   }),

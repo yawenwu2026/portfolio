@@ -20,6 +20,7 @@ interface Props {
   isPersonalProject: boolean;
   coverImage: string;
   coverAlt: string;
+  heroPosition?: string;
   summary: string;
   prevEntry?: NavEntry;
   nextEntry?: NavEntry;
@@ -36,6 +37,7 @@ const {
   isPersonalProject,
   coverImage,
   coverAlt,
+  heroPosition,
   summary,
   prevEntry,
   nextEntry,
@@ -78,7 +80,12 @@ const {
         </div>
 
         <div class="hero__image-wrap">
-          <img class="hero__image" src={withBase(coverImage)} alt={coverAlt} />
+          <img
+            class="hero__image"
+            src={withBase(coverImage)}
+            alt={coverAlt}
+            style={`object-position: ${heroPosition ?? "50% 30%"};`}
+          />
         </div>
       </div>
     </header>
@@ -233,7 +240,6 @@ const {
     width: 100%;
     aspect-ratio: var(--ratio-tall);
     object-fit: cover;
-    object-position: 50% 30%;
   }
 
   .case-study-body {
