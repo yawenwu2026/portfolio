@@ -8,11 +8,10 @@ platform: "Android"
 timeline: "Nov 2016 - Jan 2017"
 order: 2
 isPersonalProject: false
-coverImage: "/images/tramtracker/tram-cover.png"
+coverImage: "/images/tramtracker/tram-thumb.png"
 coverAlt: "The tramTRACKER app displayed on a phone showing tram arrival times"
 thumbImage: "/images/tramtracker/tram-thumb.png"
 coverPosition: "50% 50%"
-heroPosition: "90% 30%"
 summary: "Melbourne's most used tram app had a loyal audience and a two star problem. I redesigned it around three distinct rider types without breaking the habits its regulars depended on."
 tags: ["Transit", "Mobile", "Information Architecture", "Personal Project"]
 ---

@@ -2,9 +2,10 @@
 import BaseLayout from "./BaseLayout.astro";
 import { withBase } from "../lib/site";
 
-interface NavEntry {
+interface OtherEntry {
   slug: string;
   title: string;
+  subtitle: string;
   image: string;
   imageAlt: string;
 }
@@ -22,8 +23,7 @@ interface Props {
   coverAlt: string;
   heroPosition?: string;
   summary: string;
-  prevEntry?: NavEntry;
-  nextEntry?: NavEntry;
+  otherEntries: OtherEntry[];
 }
 
 const {
@@ -39,78 +39,69 @@ const {
   coverAlt,
   heroPosition,
   summary,
-  prevEntry,
-  nextEntry,
+  otherEntries,
 } = Astro.props;
 ---
 
 <BaseLayout title={`${title} — Yawen Wu`} description={summary} ogImage={coverImage} ogType="article">
-  <article>
-    <header class="hero">
-      <div class="hero__grid">
-        <div class="hero__intro">
-          {isPersonalProject && <p class="hero__label">Personal project</p>}
-          <h1>{title}</h1>
-          <p class="hero__subtitle">{subtitle}</p>
+  <article class="layout">
+    <aside class="summary">
+      {isPersonalProject && <p class="summary__label">Personal project</p>}
+      <h1 class="summary__title">{title}</h1>
+      <p class="summary__subtitle">{subtitle}</p>
 
-          <dl class="hero__meta">
-            <div class="hero__meta-row">
-              <dt>Company</dt>
-              <dd>{company}</dd>
-            </div>
-            <div class="hero__meta-row">
-              <dt>Role</dt>
-              <dd>{role}</dd>
-            </div>
-            {team && (
-              <div class="hero__meta-row">
-                <dt>Team</dt>
-                <dd>{team}</dd>
-              </div>
-            )}
-            <div class="hero__meta-row">
-              <dt>Platform</dt>
-              <dd>{platform}</dd>
-            </div>
-            <div class="hero__meta-row">
-              <dt>Timeline</dt>
-              <dd>{timeline}</dd>
-            </div>
-          </dl>
+      <dl class="summary__meta">
+        <div class="summary__meta-row">
+          <dt>Company</dt>
+          <dd>{company}</dd>
         </div>
+        <div class="summary__meta-row">
+          <dt>Role</dt>
+          <dd>{role}</dd>
+        </div>
+        {team && (
+          <div class="summary__meta-row">
+            <dt>Team</dt>
+            <dd>{team}</dd>
+          </div>
+        )}
+        <div class="summary__meta-row">
+          <dt>Platform</dt>
+          <dd>{platform}</dd>
+        </div>
+        <div class="summary__meta-row">
+          <dt>Timeline</dt>
+          <dd>{timeline}</dd>
+        </div>
+      </dl>
 
-        <div class="hero__image-wrap">
-          <img
-            class="hero__image"
-            src={withBase(coverImage)}
-            alt={coverAlt}
-            style={`object-position: ${heroPosition ?? "50% 30%"};`}
-          />
-        </div>
-      </div>
-    </header>
+      <a class="summary__home-link" href={withBase("/")}>&larr; Back to home</a>
+    </aside>
 
     <div class="case-study-body">
+      <img
+        class="case-study-cover"
+        src={withBase(coverImage)}
+        alt={coverAlt}
+        style={`object-position: ${heroPosition ?? "50% 30%"};`}
+      />
       <slot />
     </div>
 
-    <footer class="case-study-footer page">
-      <nav class="case-study-nav" aria-label="Case study navigation">
-        {prevEntry && (
-          <a class="case-study-nav__link" href={withBase(`/work/${prevEntry.slug}`)}>
-            <img class="case-study-nav__image" src={withBase(prevEntry.image)} alt={prevEntry.imageAlt} loading="lazy" />
-            <span class="case-study-nav__title">&larr; {prevEntry.title}</span>
-          </a>
-        )}
-        {nextEntry && (
-          <a class="case-study-nav__link case-study-nav__link--next" href={withBase(`/work/${nextEntry.slug}`)}>
-            <img class="case-study-nav__image" src={withBase(nextEntry.image)} alt={nextEntry.imageAlt} loading="lazy" />
-            <span class="case-study-nav__title">{nextEntry.title} &rarr;</span>
-          </a>
-        )}
-      </nav>
-      <a class="case-study-home-link" href={withBase("/")}>Back to home</a>
-    </footer>
+    <aside class="related" aria-label="Other case studies">
+      <p class="related__eyebrow">More work</p>
+      <ul class="related__list">
+        {otherEntries.map((entry) => (
+          <li>
+            <a class="related__card" href={withBase(`/work/${entry.slug}`)}>
+              <img class="related__image" src={withBase(entry.image)} alt={entry.imageAlt} loading="lazy" />
+              <span class="related__title">{entry.title}</span>
+              <span class="related__subtitle">{entry.subtitle}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </aside>
   </article>
 </BaseLayout>
 
@@ -144,45 +135,32 @@ const {
 </script>
 
 <style>
-  .hero {
+  /* ---------- Three-column layout ----------
+     Mobile: single column, source order is summary -> body -> related,
+     which is also the sensible reading order, so no explicit `order`
+     rules are needed. Desktop: summary and related become narrow rails
+     flanking the details column. Related is sticky (explicit request);
+     summary scrolls with the page, matching the reference layout. */
+  .layout {
     padding-top: var(--space-section);
-  }
-
-  .hero__grid {
-    max-width: min(var(--width-media), 100% - 2 * var(--space-gutter));
+    padding-bottom: var(--space-section);
+    max-width: min(1320px, 100% - 2 * var(--space-gutter));
     margin-inline: auto;
     display: grid;
     grid-template-columns: 1fr;
-    gap: var(--space-lg);
+    gap: var(--space-xl);
   }
 
   @media (min-width: 1024px) {
-    .hero__grid {
-      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
-      align-items: stretch;
-      gap: var(--space-xl);
-    }
-
-    .hero__image-wrap {
-      position: relative;
-      height: 100%;
-      overflow: hidden;
-    }
-
-    .hero__image {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      aspect-ratio: auto;
+    .layout {
+      grid-template-columns: minmax(200px, 240px) minmax(0, 1fr) minmax(240px, 300px);
+      align-items: start;
+      gap: var(--space-lg);
     }
   }
 
-  .hero__intro {
-    max-width: var(--width-prose);
-  }
-
-  .hero__label {
+  /* ---------- Left rail: project summary ---------- */
+  .summary__label {
     display: inline-block;
     margin: 0 0 var(--space-sm);
     padding: var(--space-xs) var(--space-sm);
@@ -193,131 +171,137 @@ const {
     font-size: var(--size-sm);
   }
 
-  .hero h1 {
+  .summary__title {
     margin: 0 0 var(--space-sm);
+    font-size: var(--size-h2);
   }
 
-  .hero__subtitle {
+  .summary__subtitle {
     margin: 0 0 var(--space-md);
     color: var(--color-text-muted);
-    font-size: var(--size-h3);
+    font-size: var(--size-sm);
     line-height: var(--leading-heading);
   }
 
-  .hero__meta {
-    margin: 0;
-    padding-top: var(--space-md);
+  .summary__meta {
+    margin: 0 0 var(--space-md);
   }
 
-  /* 2-column label/value grid, deliberately the same at every width —
-     "stays 2-column on mobile" is the explicit spec, not an oversight. */
-  .hero__meta-row {
-    display: grid;
-    grid-template-columns: minmax(5rem, 1fr) 2fr;
-    gap: var(--space-xs) var(--space-sm);
+  .summary__meta-row {
     padding-block: var(--space-sm);
     border-bottom: 1px solid var(--color-border);
   }
 
-  .hero__meta-row:last-child {
+  .summary__meta-row:last-child {
     border-bottom: none;
   }
 
-  .hero__meta-row dt {
+  .summary__meta-row dt {
     color: var(--color-accent-deep);
     font-size: var(--size-xs);
     text-transform: uppercase;
     letter-spacing: var(--tracking-caps);
   }
 
-  .hero__meta-row dd {
-    margin: 0;
+  .summary__meta-row dd {
+    margin: 0.25rem 0 0;
     font-size: var(--size-sm);
   }
 
-  .hero__image {
+  .summary__home-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    color: var(--color-text-muted);
+    font-size: var(--size-sm);
+  }
+
+  /* ---------- Middle: case study body ---------- */
+  .case-study-body {
+    min-width: 0;
+  }
+
+  .case-study-cover {
     display: block;
     width: 100%;
-    aspect-ratio: var(--ratio-tall);
+    aspect-ratio: var(--ratio-standard);
     object-fit: cover;
+    border-radius: var(--radius);
   }
 
-  .case-study-body {
-    padding-block: var(--space-section);
+  /* ---------- Right rail: other case studies ---------- */
+  .related__eyebrow {
+    margin: 0 0 var(--space-md);
+    color: var(--color-text-muted);
+    font-size: var(--size-xs);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-caps);
   }
 
-  .case-study-footer {
-    padding-block: var(--space-section);
-    border-top: 1px solid var(--color-border);
-  }
-
-  .case-study-nav {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-lg);
-    margin-bottom: var(--space-lg);
-  }
-
-  .case-study-nav__link {
+  .related__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    gap: var(--space-sm);
-    color: var(--color-text);
-    text-decoration: none;
+    gap: var(--space-md);
   }
 
-  .case-study-nav__image {
+  .related__card {
     display: block;
-    width: 50%;
-    aspect-ratio: var(--ratio-standard);
+    color: var(--color-text);
+    text-decoration: none;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background-color: var(--color-surface);
+  }
+
+  .related__image {
+    display: block;
+    width: 100%;
+    aspect-ratio: var(--ratio-wide);
     object-fit: cover;
     transition: transform 200ms ease;
   }
 
-  .case-study-nav__link:hover .case-study-nav__image {
-    transform: scale(1.02);
+  .related__card:hover .related__image {
+    transform: scale(1.03);
   }
 
-  .case-study-nav__title {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-xs);
-    min-height: 2.75rem;
+  .related__title {
+    display: block;
+    margin: var(--space-sm) var(--space-sm) 0;
     font-family: var(--font-heading);
-    font-size: var(--size-h3);
+    font-size: var(--size-sm);
+    font-weight: var(--weight-semibold);
     text-decoration-line: underline;
     text-decoration-color: transparent;
     transition: text-decoration-color 150ms ease;
   }
 
-  .case-study-nav__link:hover .case-study-nav__title {
+  .related__card:hover .related__title {
     text-decoration-color: currentColor;
   }
 
-  .case-study-home-link {
-    display: inline-flex;
-    align-items: center;
-    min-width: 2.75rem;
-    min-height: 2.75rem;
+  .related__subtitle {
+    display: block;
+    margin: 0.25rem var(--space-sm) var(--space-sm);
     color: var(--color-text-muted);
+    font-size: var(--size-xs);
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .case-study-nav__image,
-    .case-study-nav__title {
+    .related__image,
+    .related__title {
       transition: none;
     }
   }
 
-  @media (min-width: 640px) {
-    .case-study-nav {
-      grid-template-columns: 1fr 1fr;
-    }
-
-    .case-study-nav__link--next {
-      grid-column: 2;
-      align-items: flex-end;
-      text-align: right;
+  @media (min-width: 1024px) {
+    .related {
+      position: sticky;
+      top: calc(var(--space-sm) * 2 + 3rem);
     }
   }
 </style>
