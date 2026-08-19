@@ -1,7 +1,6 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import PageHero from "../components/blocks/PageHero.astro";
 import { withBase } from "../lib/site";
 
 const entries = await getCollection("work");
@@ -12,80 +11,146 @@ const description =
 ---
 
 <BaseLayout title="Yawen Wu — Senior Product Designer" description={description}>
-  <PageHero
-    tagline="Making complex software feel simple"
-    photo="/images/shared/yawen-photo.png"
-    photoAlt="Yawen Wu"
-  >
-    <Fragment slot="heading">Hi, I'm Yawen, a product designer based in Melbourne.</Fragment>
-    <p>
-      For over 15 years I've turned complex problems into products people rely on, across enterprise
-      SaaS, banking, marketplaces and mobile navigation.
-    </p>
-    <p>
-      I've owned products end to end as a sole designer, and worked inside regulated organisations
-      where accessibility and compliance are non-negotiable.
-    </p>
-    <p>
-      My work starts with people, not screens. I work hands-on, and that now includes AI. I prototype
-      in code with Claude and Figma Make, and this site was built that way too.
-    </p>
-    <p>
-      If you're building something complex and need a designer who finds the real problem, makes the
-      calls and ships, I'd love to talk.
-    </p>
-  </PageHero>
-
-  <div class="aside">
-    <p class="aside__bubble">
-      This site is me practising. I designed it and built it with Claude Code, and I'm still tinkering,
-      so it'll probably look a bit different next time you drop by.
-    </p>
-  </div>
-
-  <section id="work" class="work" aria-label="Selected work">
-    <div class="work__grid">
-      {
-        sorted.map((entry) => (
-          <a class="card" href={withBase(`/work/${entry.id}`)}>
-            <img
-              class="card__image"
-              src={withBase(entry.data.thumbImage ?? entry.data.coverImage)}
-              alt={entry.data.coverAlt}
-              style={`object-position: ${entry.data.coverPosition ?? "50% 50%"};`}
-              loading="lazy"
-              data-fade
-            />
-            <div class="card__body">
-              {entry.data.isPersonalProject && <p class="card__label">Personal project</p>}
-              <h2 class="card__title">{entry.data.title}</h2>
-              <p class="card__meta">
-                {entry.data.company} · {entry.data.timeline}
-              </p>
-              <p class="card__summary">{entry.data.summary}</p>
-            </div>
-          </a>
-        ))
-      }
+  <div class="layout">
+    <div class="intro">
+      <img class="intro__photo" src={withBase("/images/shared/yawen-photo.png")} alt="Yawen Wu" />
+      <p class="intro__tagline">Making complex software feel simple</p>
+      <h1 class="intro__heading">Hi, I'm Yawen, a product designer based in Melbourne.</h1>
+      <div class="intro__body">
+        <p>
+          For over 15 years I've turned complex problems into products people rely on, across
+          enterprise SaaS, banking, marketplaces and mobile navigation.
+        </p>
+        <p>
+          I've owned products end to end as a sole designer, and worked inside regulated
+          organisations where accessibility and compliance are non-negotiable.
+        </p>
+        <p>
+          My work starts with people, not screens. I work hands-on, and that now includes AI. I
+          prototype in code with Claude and Figma Make, and this site was built that way too.
+        </p>
+        <p>
+          If you're building something complex and need a designer who finds the real problem,
+          makes the calls and ships, I'd love to talk.
+        </p>
+      </div>
     </div>
-  </section>
+
+    <aside class="aside-rail">
+      <p class="aside-rail__bubble">
+        This site is me practising. I designed it and built it with Claude Code, and I'm still
+        tinkering, so it'll probably look a bit different next time you drop by.
+      </p>
+    </aside>
+
+    <aside class="related" aria-label="Selected work">
+      <p class="related__eyebrow">More work</p>
+      <ul class="related__list">
+        {
+          sorted.map((entry) => (
+            <li>
+              <a class="related__card" href={withBase(`/work/${entry.id}`)}>
+                <img
+                  class="related__image"
+                  src={withBase(entry.data.thumbImage ?? entry.data.coverImage)}
+                  alt={entry.data.coverAlt}
+                  style={`object-position: ${entry.data.coverPosition ?? "50% 50%"};`}
+                  loading="lazy"
+                />
+                <span class="related__title">{entry.data.title}</span>
+                <span class="related__subtitle">{entry.data.subtitle}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </aside>
+  </div>
 </BaseLayout>
 
 <style>
-  .aside {
-    max-width: min(var(--width-media), 100% - 2 * var(--space-gutter));
+  /* ---------- Three-column layout ----------
+     Same skeleton as the case-study template: mobile stacks to one
+     column, desktop splits into a narrow left rail, a wide middle
+     column and a sticky right rail. DOM order is intro -> aside ->
+     related (the sensible mobile reading order — bio first); desktop
+     uses `order` to reshuffle into left/middle/right without
+     duplicating markup. */
+  .layout {
+    padding-top: var(--space-section);
+    padding-bottom: var(--space-section);
+    max-width: min(1320px, 100% - 2 * var(--space-gutter));
     margin-inline: auto;
-    padding-top: var(--space-lg);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
   }
 
-  /* Speech-bubble callout: sharp corners (site radius token is 0, so a
-     rounded bubble would be the odd one out), border + tint like the
-     hero__label pattern elsewhere, with a small CSS-triangle tail
-     pointing back up at the intro this comments on. */
-  .aside__bubble {
+  @media (min-width: 1024px) {
+    .layout {
+      grid-template-columns: minmax(200px, 240px) minmax(0, 1fr) minmax(240px, 300px);
+      align-items: start;
+      gap: var(--space-lg);
+    }
+
+    .aside-rail {
+      order: 1;
+    }
+
+    .intro {
+      order: 2;
+    }
+
+    .related {
+      order: 3;
+    }
+  }
+
+  /* ---------- Middle: photo + intro ---------- */
+  .intro__photo {
+    display: block;
+    width: 160px;
+    aspect-ratio: var(--ratio-square);
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: var(--space-lg);
+  }
+
+  /* Same handwritten-display treatment used on the FSM case study lead
+     line: --font-accent (Caveat) at display scale in accent-deep gold. */
+  .intro__tagline {
+    margin: 0 0 var(--space-md);
+    color: var(--color-accent-deep);
+    font-family: var(--font-accent);
+    font-size: clamp(2rem, 1.4rem + 3vw, 3.5rem);
+    line-height: 1.2;
+  }
+
+  .intro__heading {
+    margin: 0 0 var(--space-md);
+    max-width: 30ch;
+    font-size: var(--size-h1-fluid);
+    line-height: 1.4;
+    color: var(--color-text);
+  }
+
+  .intro__body p {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--color-text);
+  }
+
+  .intro__body p + p {
+    margin-top: var(--space-md);
+  }
+
+  /* ---------- Left rail: speech-bubble aside ---------- */
+  /* Sharp corners (site radius token is 0) with a CSS-triangle tail
+     pointing right, back at the intro column it comments on — it sat
+     below the intro in the old two-column layout with the tail
+     pointing up; now it sits beside it, so the tail moved to match. */
+  .aside-rail__bubble {
     position: relative;
-    max-width: min(var(--width-prose), 100%);
-    margin: 0 0 0 var(--space-xl);
     padding: var(--space-md) var(--space-lg);
     background-color: var(--color-surface);
     border: 1px solid var(--color-border);
@@ -93,87 +158,98 @@ const description =
     color: var(--color-text-muted);
   }
 
-  .aside__bubble::before {
+  .aside-rail__bubble::before {
     content: "";
     position: absolute;
-    top: -9px;
-    left: var(--space-lg);
+    top: var(--space-lg);
+    right: -9px;
     width: 16px;
     height: 16px;
     background-color: var(--color-surface);
     border-top: 1px solid var(--color-border);
-    border-left: 1px solid var(--color-border);
+    border-right: 1px solid var(--color-border);
     transform: rotate(45deg);
   }
 
-  .work {
-    max-width: min(var(--width-media), 100% - 2 * var(--space-gutter));
-    margin-inline: auto;
-    padding-block: var(--space-section);
-  }
-
-  /* Auto-fit rather than a fixed column count per breakpoint: within
-     each tier the grid still degrades continuously as the viewport
-     resizes, only the minmax floor changes at 768/1024 to bias the
-     count toward the spec (2 across, then 3). The two px values are a
-     practical floor for this one grid given --width-media and
-     --space-lg's gap, not reusable design values, hence raw numbers
-     rather than tokens — same reasoning as the breakpoints above. */
-  .work__grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-lg);
-  }
-
-  @media (min-width: 768px) {
-    .work__grid {
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  @media (max-width: 1023px) {
+    .aside-rail__bubble::before {
+      display: none;
     }
   }
 
-  @media (min-width: 1024px) {
-    .work__grid {
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    }
-  }
-
-  .card {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-sm);
-    color: inherit;
-    text-decoration: none;
-  }
-
-  .card__image {
-    display: block;
-    width: 100%;
-    aspect-ratio: var(--ratio-standard);
-    object-fit: cover;
-  }
-
-  .card__label {
-    margin: 0 0 var(--space-xs);
-    color: var(--color-accent-deep);
+  /* ---------- Right rail: other case studies ---------- */
+  .related__eyebrow {
+    margin: 0 0 var(--space-md);
+    color: var(--color-text-muted);
     font-size: var(--size-xs);
     text-transform: uppercase;
     letter-spacing: var(--tracking-caps);
   }
 
-  .card__title {
-    margin: 0 0 var(--space-xs);
-    font-size: var(--size-h2);
-    font-weight: var(--weight-semibold);
-  }
-
-  .card__meta {
-    margin: 0 0 var(--space-sm);
-    color: var(--color-text-muted);
-    font-size: var(--size-sm);
-  }
-
-  .card__summary {
+  .related__list {
+    list-style: none;
     margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .related__card {
+    display: block;
     color: var(--color-text);
+    text-decoration: none;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background-color: var(--color-surface);
+  }
+
+  .related__image {
+    display: block;
+    width: 100%;
+    aspect-ratio: var(--ratio-wide);
+    object-fit: cover;
+    transition: transform 200ms ease;
+  }
+
+  .related__card:hover .related__image {
+    transform: scale(1.03);
+  }
+
+  .related__title {
+    display: block;
+    margin: var(--space-sm) var(--space-sm) 0;
+    font-family: var(--font-heading);
+    font-size: var(--size-sm);
+    font-weight: var(--weight-semibold);
+    text-decoration-line: underline;
+    text-decoration-color: transparent;
+    transition: text-decoration-color 150ms ease;
+  }
+
+  .related__card:hover .related__title {
+    text-decoration-color: currentColor;
+  }
+
+  .related__subtitle {
+    display: block;
+    margin: 0.25rem var(--space-sm) var(--space-sm);
+    color: var(--color-text-muted);
+    font-size: var(--size-xs);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .related__image,
+    .related__title {
+      transition: none;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .related {
+      position: sticky;
+      top: calc(var(--space-sm) * 2 + 3rem);
+    }
   }
 </style>

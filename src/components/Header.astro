@@ -139,9 +139,9 @@ const workEntries = [...(await getCollection("work"))].sort((a, b) => a.data.ord
     color: var(--color-text);
   }
 
-  /* Work becomes a dropdown of the case studies rather than a link to
-     the homepage's #work anchor, so it works the same from any page,
-     not just home. Positioned relative to anchor the panel below it. */
+  /* Work is a dropdown listing every case study directly, so it works
+     the same from any page, not just home. Positioned relative to
+     anchor the panel below it. */
   .site-header__work {
     position: relative;
   }
