@@ -36,6 +36,14 @@ const description =
     </p>
   </PageHero>
 
+  <div class="aside">
+    <p class="aside__bubble">
+      This site is me practising. I designed it and built it with Claude Code, and I'm still tinkering,
+      so it'll probably look a bit different next time you drop by. That's the point. It's easier to
+      talk about shipping early and learning as you go when you're actually doing it.
+    </p>
+  </div>
+
   <section id="work" class="work" aria-label="Selected work">
     <div class="work__grid">
       {
@@ -65,6 +73,40 @@ const description =
 </BaseLayout>
 
 <style>
+  .aside {
+    max-width: min(var(--width-media), 100% - 2 * var(--space-gutter));
+    margin-inline: auto;
+    padding-top: var(--space-lg);
+  }
+
+  /* Speech-bubble callout: sharp corners (site radius token is 0, so a
+     rounded bubble would be the odd one out), border + tint like the
+     hero__label pattern elsewhere, with a small CSS-triangle tail
+     pointing back up at the intro this comments on. */
+  .aside__bubble {
+    position: relative;
+    max-width: min(var(--width-prose), 100%);
+    margin: 0 0 0 var(--space-xl);
+    padding: var(--space-md) var(--space-lg);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    font-size: var(--size-sm);
+    color: var(--color-text-muted);
+  }
+
+  .aside__bubble::before {
+    content: "";
+    position: absolute;
+    top: -9px;
+    left: var(--space-lg);
+    width: 16px;
+    height: 16px;
+    background-color: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    border-left: 1px solid var(--color-border);
+    transform: rotate(45deg);
+  }
+
   .work {
     max-width: min(var(--width-media), 100% - 2 * var(--space-gutter));
     margin-inline: auto;
