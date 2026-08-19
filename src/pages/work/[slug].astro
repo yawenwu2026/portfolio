@@ -6,17 +6,16 @@ export async function getStaticPaths() {
   const entries = await getCollection("work");
   const sorted = [...entries].sort((a, b) => a.data.order - b.data.order);
 
-  return sorted.map((entry, index) => ({
+  return sorted.map((entry) => ({
     params: { slug: entry.id },
     props: {
       entry,
-      prevEntry: sorted[index - 1],
-      nextEntry: sorted[index + 1],
+      otherEntries: sorted.filter((e) => e.id !== entry.id),
     },
   }));
 }
 
-const { entry, prevEntry, nextEntry } = Astro.props;
+const { entry, otherEntries } = Astro.props;
 const { Content } = await render(entry);
 ---
 
@@ -30,25 +29,17 @@ const { Content } = await render(entry);
   timeline={entry.data.timeline}
   isPersonalProject={entry.data.isPersonalProject}
   coverImage={entry.data.coverImage}
+  summaryImage={entry.data.thumbImage ?? entry.data.coverImage}
   coverAlt={entry.data.coverAlt}
-  heroPosition={entry.data.heroPosition}
+  heroPosition={entry.data.thumbImage ? undefined : entry.data.heroPosition}
   summary={entry.data.summary}
-  prevEntry={
-    prevEntry && {
-      slug: prevEntry.id,
-      title: prevEntry.data.title,
-      image: prevEntry.data.thumbImage ?? prevEntry.data.coverImage,
-      imageAlt: prevEntry.data.coverAlt,
-    }
-  }
-  nextEntry={
-    nextEntry && {
-      slug: nextEntry.id,
-      title: nextEntry.data.title,
-      image: nextEntry.data.thumbImage ?? nextEntry.data.coverImage,
-      imageAlt: nextEntry.data.coverAlt,
-    }
-  }
+  otherEntries={otherEntries.map((e) => ({
+    slug: e.id,
+    title: e.data.title,
+    subtitle: e.data.subtitle,
+    image: e.data.thumbImage ?? e.data.coverImage,
+    imageAlt: e.data.coverAlt,
+  }))}
 >
   <Content />
 </CaseStudy>
