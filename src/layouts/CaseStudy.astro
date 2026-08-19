@@ -20,7 +20,6 @@ interface Props {
   timeline: string;
   isPersonalProject: boolean;
   coverImage: string;
-  summaryImage: string;
   coverAlt: string;
   heroPosition?: string;
   summary: string;
@@ -37,7 +36,6 @@ const {
   timeline,
   isPersonalProject,
   coverImage,
-  summaryImage,
   coverAlt,
   heroPosition,
   summary,
@@ -48,13 +46,6 @@ const {
 <BaseLayout title={`${title} — Yawen Wu`} description={summary} ogImage={coverImage} ogType="article">
   <article class="layout">
     <aside class="summary">
-      <img
-        class="summary__cover"
-        src={withBase(summaryImage)}
-        alt={coverAlt}
-        style={`object-position: ${heroPosition ?? "50% 30%"};`}
-      />
-
       {isPersonalProject && <p class="summary__label">Personal project</p>}
       <h1 class="summary__title">{title}</h1>
       <p class="summary__subtitle">{subtitle}</p>
@@ -88,6 +79,12 @@ const {
     </aside>
 
     <div class="case-study-body">
+      <img
+        class="case-study-cover"
+        src={withBase(coverImage)}
+        alt={coverAlt}
+        style={`object-position: ${heroPosition ?? "50% 30%"};`}
+      />
       <slot />
     </div>
 
@@ -163,15 +160,6 @@ const {
   }
 
   /* ---------- Left rail: project summary ---------- */
-  .summary__cover {
-    display: block;
-    width: 100%;
-    aspect-ratio: var(--ratio-standard);
-    object-fit: cover;
-    border-radius: var(--radius);
-    margin-bottom: var(--space-md);
-  }
-
   .summary__label {
     display: inline-block;
     margin: 0 0 var(--space-sm);
@@ -231,6 +219,14 @@ const {
   /* ---------- Middle: case study body ---------- */
   .case-study-body {
     min-width: 0;
+  }
+
+  .case-study-cover {
+    display: block;
+    width: 100%;
+    aspect-ratio: var(--ratio-standard);
+    object-fit: cover;
+    border-radius: var(--radius);
   }
 
   /* ---------- Right rail: other case studies ---------- */

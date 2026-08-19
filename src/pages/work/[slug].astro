@@ -29,9 +29,8 @@ const { Content } = await render(entry);
   timeline={entry.data.timeline}
   isPersonalProject={entry.data.isPersonalProject}
   coverImage={entry.data.coverImage}
-  summaryImage={entry.data.thumbImage ?? entry.data.coverImage}
   coverAlt={entry.data.coverAlt}
-  heroPosition={entry.data.thumbImage ? undefined : entry.data.heroPosition}
+  heroPosition={entry.data.heroPosition}
   summary={entry.data.summary}
   otherEntries={otherEntries.map((e) => ({
     slug: e.id,
