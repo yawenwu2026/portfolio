@@ -1,22 +1,24 @@
 ---
 // 9. PAGE HERO — currently used on home only (see index.astro). Dark
-// section, italic eyebrow, heading with <em>-marked words in accent
-// italic, role/location meta row, and a circular photo on the right.
+// section, handwritten display tagline, heading with <em>-marked words
+// in accent italic, a paragraph slot for supporting copy, and a
+// circular photo on the right.
 //
 // Heading goes through the "heading" named slot rather than a plain
 // string prop so the caller can mark specific words with <em> for the
 // italic + accent treatment, e.g.:
 //   <Fragment slot="heading">I design with <em>empathy</em>.</Fragment>
+// The default slot holds any number of supporting paragraphs below
+// the heading.
 import { withBase } from "../../lib/site";
 
 interface Props {
-  eyebrow?: string;
-  role?: string;
+  tagline?: string;
   photo: string;
   photoAlt: string;
 }
 
-const { eyebrow, role, photo, photoAlt } = Astro.props;
+const { tagline, photo, photoAlt } = Astro.props;
 ---
 
 <section class="page-hero">
@@ -26,22 +28,11 @@ const { eyebrow, role, photo, photoAlt } = Astro.props;
     </div>
 
     <div class="page-hero__text">
-      {eyebrow && <p class="page-hero__eyebrow">{eyebrow}</p>}
+      {tagline && <p class="page-hero__tagline">{tagline}</p>}
       <h1 class="page-hero__heading"><slot name="heading" /></h1>
-
-      {
-        role && (
-          <div class="page-hero__meta">
-            <p class="page-hero__meta-row">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <rect x="3" y="7" width="18" height="13" rx="1"></rect>
-                <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-              </svg>
-              {role}
-            </p>
-          </div>
-        )
-      }
+      <div class="page-hero__body">
+        <slot />
+      </div>
     </div>
   </div>
 </section>
@@ -65,15 +56,20 @@ const { eyebrow, role, photo, photoAlt } = Astro.props;
     max-width: min(var(--width-prose), 100%);
   }
 
-  .page-hero__eyebrow {
-    margin: 0 0 var(--space-sm);
-    font-style: italic;
-    font-size: var(--size-lg);
-    color: var(--color-text-muted);
+  /* Same handwritten-display treatment as the case study lead line:
+     --font-accent (Caveat) at display scale in accent-deep gold. Kept
+     consistent across the site rather than inventing a second accent
+     voice for the homepage specifically. */
+  .page-hero__tagline {
+    margin: 0 0 var(--space-md);
+    color: var(--color-accent-deep);
+    font-family: var(--font-accent);
+    font-size: clamp(2rem, 1.4rem + 3vw, 3.5rem);
+    line-height: 1.2;
   }
 
   .page-hero__heading {
-    margin: 0;
+    margin: 0 0 var(--space-md);
     max-width: 46ch;
     font-size: var(--size-h1-fluid);
     line-height: 1.4;
@@ -91,26 +87,16 @@ const { eyebrow, role, photo, photoAlt } = Astro.props;
     font-weight: var(--weight-semibold);
   }
 
-  .page-hero__meta {
-    margin-top: var(--space-lg);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-xs);
-  }
-
-  .page-hero__meta-row {
-    display: flex;
-    align-items: center;
-    gap: var(--space-xs);
+  /* Same :global reasoning as the heading — paragraphs arrive via the
+     default slot from index.astro. */
+  .page-hero__body :global(p) {
     margin: 0;
-    color: var(--color-text-muted);
-    font-size: var(--size-sm);
+    font-size: 1rem;
+    color: var(--color-text);
   }
 
-  .page-hero__meta-row svg {
-    flex-shrink: 0;
-    width: 1.25rem;
-    height: 1.25rem;
+  .page-hero__body :global(p + p) {
+    margin-top: var(--space-md);
   }
 
   .page-hero__photo {
@@ -128,7 +114,7 @@ const { eyebrow, role, photo, photoAlt } = Astro.props;
   @media (min-width: 768px) {
     .page-hero__inner {
       flex-direction: row;
-      align-items: center;
+      align-items: flex-start;
       justify-content: space-between;
     }
 
