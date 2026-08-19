@@ -1,28 +1,24 @@
 /* ============================================================
    Design tokens
-   Ground moved to white/light-grey (ref: brutus.jp) from the warm
-   off-white the palette originally shipped with. Brand blue #4D70B8
-   and accent #F5BD33 are unchanged and still sampled from Yawen's
-   2026 portfolio PDF. Type is still undecided. See the TYPOGRAPHY
-   block below.
+   Palette sampled directly from Yawen's 2026 portfolio PDF.
+   Base ground #F2EDE6, brand blue #4D70B8, accent #F5BD33.
+   Type is still undecided. See the TYPOGRAPHY block below.
    ============================================================ */
 
 :root {
   /* ---- Ground ------------------------------------------------
-     --color-bg is now plain white. --color-surface is one step
-     deeper — a neutral light grey, used for cards, callouts, and the
-     alternating case-study section-tint bands. With bg already at
-     white there's no lighter tier left above it, so --color-surface-alt
-     is the same white as --color-bg; kept as a separate token rather
-     than deleted since call sites still reference it by name. */
-  --color-bg: #FFFFFF;
-  --color-surface: #EFEFED;
-  --color-surface-alt: #FFFFFF;
+     --color-bg is the warm off-white carried over from the PDF.
+     --color-surface is one step deeper, for cards and callouts.
+     --color-surface-alt is the near-white used on the PDF's
+     content-heavy slides, for sections that need to feel lighter. */
+  --color-bg: #F2EDE6;
+  --color-surface: #E9E2D8;
+  --color-surface-alt: #FAF8F4;
   --color-inverse-bg: #1C1F23;
 
   /* ---- Text --------------------------------------------------
      Not pure black. #1C1F23 is the dark tone already present in
-     the PDF and gives slightly softer contrast than true black. */
+     the PDF and sits more comfortably on a warm ground. */
   --color-text: #1C1F23;
   --color-text-muted: #6B675F;
   --color-text-inverse: #F2EDE6;
@@ -41,17 +37,17 @@
 
   /* ---- Accent ------------------------------------------------
      The yellow marker rules from the PDF's opening slide.
-     --color-accent is decorative only (1.72:1) — never text, never a
+     --color-accent is decorative only (1.48:1) — never text, never a
      sole indicator. --color-accent-deep is a darkened gold, same
      family, for the handful of places that actually need gold *text*
-     (a small eyebrow label, a numbered list marker): 6.11:1 against
+     (a small eyebrow label, a numbered list marker): 5.2:1 against
      --color-bg, clears AA at any size. */
   --color-accent: #F5BD33;
   --color-accent-deep: #7A5E14;
 
   /* ---- Structure --------------------------------------------- */
-  --color-border: #E2E2DF;
-  --color-border-strong: #C6C6C2;
+  --color-border: #DDD5C9;
+  --color-border-strong: #C4BAAB;
 
   /* ---- TYPOGRAPHY ----------------------------------------------
      Work Sans, self-hosted via @fontsource-variable/work-sans, one
@@ -131,15 +127,15 @@
 }
 
 /* ============================================================
-   Contrast reference against --color-bg #FFFFFF
+   Contrast reference against --color-bg #F2EDE6
 
-   #1C1F23  text            16.54:1  AAA, body text
-   #6B675F  muted            5.63:1  AA, captions and metadata
-   #3A5896  brand-deep       6.96:1  AA, links and small brand text
-   #4D70B8  brand            4.85:1  large text only, 24px+ or 19px bold
-   #F5BD33  accent           1.72:1  decorative only, never text
-   #7A5E14  accent-deep      6.11:1  AA, gold text (eyebrows, numerals)
-   #E2E2DF  border           1.30:1  non-essential separators only
+   #1C1F23  text            14.20:1  AAA, body text
+   #6B675F  muted            4.83:1  AA, captions and metadata
+   #3A5896  brand-deep       5.98:1  AA, links and small brand text
+   #4D70B8  brand            4.17:1  large text only, 24px+ or 19px bold
+   #F5BD33  accent           1.48:1  decorative only, never text
+   #7A5E14  accent-deep      5.24:1  AA, gold text (eyebrows, numerals)
+   #DDD5C9  border           1.25:1  non-essential separators only
 
    Inverse sections on #1C1F23:
    #F2EDE6  text on inverse         14.20:1  AAA

@@ -187,10 +187,11 @@ small {
   margin-top: var(--space-md);
 }
 
-/* Primary CTA button: shared by the header and footer. --color-brand-deep
-   background with --color-text-inverse text is 5.98:1 (independent of
-   --color-bg — neither of those two tokens is the page background),
-   clearing both 4.5:1 text and 3:1 UI-component AA.
+/* Primary CTA button: shared by the header and footer. Contrast verified
+   against tokens.css's reference table: --color-brand-deep and
+   --color-text-inverse are the same pair as --color-brand-deep on
+   --color-bg (5.98:1), just with the two roles swapped, so the ratio is
+   identical and clears both 4.5:1 text and 3:1 UI-component AA.
    min-height/min-width: 44px touch target floor. */
 .button {
   display: inline-flex;
@@ -230,10 +231,9 @@ table :is(th, td) {
   text-align: left;
 }
 
-/* --color-accent is decorative only (1.72:1 against --color-bg, see
+/* --color-accent is decorative only (1.48:1 against --color-bg, see
    tokens.css) and would fail the 3:1 UI-component contrast a focus ring
-   needs. --color-brand-deep (6.96:1 against --color-bg) is used here
-   instead. */
+   needs. --color-brand-deep (5.98:1) is used here instead. */
 :focus-visible {
   outline: 2px solid var(--color-brand-deep);
   outline-offset: 2px;
